@@ -6,8 +6,11 @@
 
 # Desenvolvimento de aplicações hiperescalavéis
 
-## Link - Documentação de Projeto:
-Em desenvolvimento
+## Documentação do Projeto
+
+Para acessar a documentação completa do nosso projeto, [clique aqui](https://inteli-college.github.io/2024-1B-T02-EC10-G05/).
+
+Ou acesse diretamente através do URL: [https://inteli-college.github.io/2024-1B-T02-EC10-G05/](https://inteli-college.github.io/2024-1B-T02-EC10-G05/)
 
 ## Grupo 5 - Tainara
 
