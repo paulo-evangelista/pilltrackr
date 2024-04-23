@@ -6,8 +6,6 @@
 
 import {themes as prismThemes} from 'prism-react-renderer';
 
-const organizationName = '2024-1B-T02-EC10-G05';
-
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'My Site',
@@ -15,15 +13,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: `https://${organizationName}.github.io`,
+  url: `https://inteli-college.github.io`,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: `/${organizationName}/`,
+  baseUrl: `/2024-1B-T02-EC10-G05/`,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   projectName: '2024-1B-T02-EC10-G05', // Usually your repo name.
-  organizationName: 'docs', // Usually your GitHub org/user name.
+  organizationName: 'Inteli-College', // Usually your GitHub org/user name.
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
