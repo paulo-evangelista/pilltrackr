@@ -1,35 +1,45 @@
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+import img1 from '@site/static/img/img-1.webp';
+import img2 from '@site/static/img/img-2.webp';
+import img3 from '@site/static/img/img-3.webp';
+
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Simplicidade na Utilização',
+    Svg: () => (
+      <img src={img1} alt="Descrição da imagem" style={{ width: '30%', height: 'auto' }} />
+    ),
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Nosso aplicativo foi desenvolvido para ser fácil de usar, permitindo que
+        você gerencie os medicamentos do hospital de maneira eficiente e intuitiva.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Foque no que é Importante',
+    Svg: () => (
+      <img src={img2} alt="Descrição da imagem" style={{ width: '30%', height: 'auto' }} />
+    ),
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Nosso sistema permite que você foque no gerenciamento eficaz do estoque, enquanto
+        cuidamos da complexidade. Simplifique as operações do dia a dia e ganhe agilidade.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Segurança e Confiabilidade',
+    Svg: () => (
+      <img src={img3} alt="Descrição da imagem" style={{ width: '30%', height: 'auto' }} />
+    ),
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Garanta a segurança e a confiabilidade dos dados do estoque com nosso sistema,
+        projetado para atender as exigências do setor de saúde.
       </>
     ),
   },
