@@ -6,7 +6,7 @@
 
 # Desenvolvimento de aplicações hiperescalavéis
 
-## Documentação do Projeto
+## Documentação do Projeto - teste
 
 Para acessar a documentação completa do nosso projeto, [clique aqui](https://inteli-college.github.io/2024-1B-T02-EC10-G05/).
 
