@@ -6,13 +6,13 @@
 
 # Desenvolvimento de aplicações hiperescalavéis
 
-## Documentação do Projeto - teste
+## Documentação do Projeto
 
 Para acessar a documentação completa do nosso projeto, [clique aqui](https://inteli-college.github.io/2024-1B-T02-EC10-G05/).
 
 Ou acesse diretamente através do URL: [https://inteli-college.github.io/2024-1B-T02-EC10-G05/](https://inteli-college.github.io/2024-1B-T02-EC10-G05/)
 
-## Grupo 5 - Tainara
+## Grupo 5
 
 ## :student: Integrantes: 
 - <a href="https://www.linkedin.com/in/alysson-c-c-cordeiro-0684a8236/">Alysson C. C. Cordeiro</a>
