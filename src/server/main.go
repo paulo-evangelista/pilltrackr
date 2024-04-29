@@ -6,14 +6,13 @@ import (
 )
 
 func setupRouter() *gin.Engine {
-
 	r := gin.Default()
 
-	r.GET("/hello", func(c *gin.Context) {
-		c.String(http.StatusOK, "World!")
+	r.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Hello World!")
 	})
 
-	r.GET("/hello/:name", func(c *gin.Context) {
+	r.GET("/:name", func(c *gin.Context) {
 		name := c.Params.ByName("name")
 		c.String(http.StatusOK,"Hello, %s!", name)
 	})
