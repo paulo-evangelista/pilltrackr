@@ -6,7 +6,7 @@ sidebar_position: 5
 
 # Riscos e Oportunidades
 
-![matrix de risco](/docs/docs/Images/Matriz%20de%20Risco.png)
+![matrix de risco](/img/matriz-de-risco.png)
 
 ## Riscos
 
