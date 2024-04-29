@@ -6,12 +6,14 @@ sidebar_position: 5
 
 # Riscos e Oportunidades
 
+![matrix de risco](/docs/docs/Images/Matriz%20de%20Risco.png)
+
 ## Riscos
 
 Identificamos diversos riscos que podem impactar o projeto e propomos estratégias de mitigação para cada um deles:
 
-### Falta de Experiência na Plataforma Nova
-- **Proposta de Mitigação:** Treinamento da equipe e desenvolvimento de uma interface amigável.
+### Barreira Inicial na Plataforma Nova:
+- **Proposta de Mitigação:** Onboarding do usuario a plataforma e interface simples e acessivel.
 
 ### Complexidade Técnica na Integração com Sistemas Existentes
 - **Proposta de Mitigação:** Explorar alternativas de integração e realizar testes exaustivos.
@@ -29,22 +31,25 @@ Identificamos diversos riscos que podem impactar o projeto e propomos estratégi
 - **Proposta de Mitigação:** Realizar uma análise detalhada dos custos, criar uma reserva financeira e priorizar os recursos essenciais.
 
 ### Indisponibilidade do Sistema
-- **Proposta de Mitigação:** Implementar redundância de servidores e monitoramento proativo para identificar e resolver problemas rapidamente.
+- **Proposta de Mitigação:** Disponibilização do contato da Farmacia Central, para comunicação direta, como a atual, para backup do sistema.
 
 ### Indisponibilidade do Estoque
-- **Proposta de Mitigação:** Implementar um sistema de gestão de estoque com monitoramento em tempo real e alertas automáticos para reabastecimento.
+- **Proposta de Mitigação:** Gerar notificações ao Farmaceutico indicando a variação de requisição desse item.
 
 ### Registros de Entrada/Baixa Duplicados
 - **Proposta de Mitigação:** Desenvolver controles de integridade de dados e implementar verificações de consistência nos processos.
 
+
+
 ## Oportunidades
 
-A implementação do projeto também abre várias oportunidades significativas:
+Na implementação do projeto também idientificamos várias oportunidades significativas:
 
-- Otimização do fluxo de trabalho.
-- Previsibilidade na falta de estoque.
-- Melhoria na qualidade do atendimento.
-- Redução de erros de medicação.
-- Melhoria na rastreabilidade.
-- Análise de dados para melhorias contínuas.
-- Redução de desperdício de medicamentos.
+### Previsibilidade na falta do estoque:
+
+
+### Agilidade na reposição
+
+
+### Melhoria na rastreabilidade
+
