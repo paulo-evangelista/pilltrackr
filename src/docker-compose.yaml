@@ -1,0 +1,9 @@
+services:
+
+  server:
+    container_name: server
+    build: ./server
+    volumes:
+      - ./server:/app
+    ports:
+    - 8080:8080
