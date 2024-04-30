@@ -4,6 +4,8 @@ sidebar_position: 5
 
 # Matriz de Risco e plano de contingência
 
+A matriz de risco é uma ferramenta visual que organiza e classifica os riscos potenciais de um projeto. Ela identifica e avalia a probabilidade de ocorrência de determinados eventos adversos e o impacto que esses eventos podem ter, permitindo uma melhor gestão e mitigação dos riscos.
+
 # Riscos e Oportunidades
 
 ![matrix de risco](/img/matriz-de-risco.png)
