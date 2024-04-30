@@ -50,3 +50,6 @@ O sistema deve incluir funcionalidades para monitorar a saúde da aplicação e 
 
 #### Não Funcional
 Todas as métricas de monitoramento de saúde da aplicação devem ser documentadas e atualizadas assim que lançada nova atualização, assegurando a continuidade e eficiência operacional.
+
+## Primeira versão da Arquitetura do Sistema
+![arch](/home/gt/Documents/Github/2024-1B-T02-EC10-G05/docs/static/img/arch.png)
