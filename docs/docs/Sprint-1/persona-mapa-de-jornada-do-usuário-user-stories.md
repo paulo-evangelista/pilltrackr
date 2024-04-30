@@ -3,7 +3,9 @@ sidebar_position: 3
 ---
 
 # Personas
+![alt text](image.png)
 
+![alt text](imagejoao.png)
 
 # Mapa de Jornada do Usuário
 
