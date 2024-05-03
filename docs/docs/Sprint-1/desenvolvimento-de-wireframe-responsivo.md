@@ -14,4 +14,5 @@ sidebar_position: 4
 
 # Primeira versão 
 
-![alt text](../../static/img/image.png)
+![alt text](image.png)
+Link do Figma: https://www.figma.com/file/mU020Mm6wYi6g83OQF8vYX/figma?type=design&mode=design&t=n9X6F5qO9VJXKgPH-1 
