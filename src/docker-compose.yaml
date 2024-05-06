@@ -7,3 +7,20 @@ services:
       - ./server:/app
     ports:
     - 8080:8080
+    depends_on:
+      - db
+    
+  db:
+    container_name: postgres_db
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
