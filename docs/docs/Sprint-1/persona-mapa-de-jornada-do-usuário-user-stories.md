@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Personas
 Esta seção apresenta a persona que serve como um exemplo representativo dos usuários finais. Personas são perfis fictícios, mas realistas, criados com base em pesquisa de usuário para representar um tipo de usuários que pode usar o serviço ou produto. Isso ajuda a equipe de desenvolvimento a visualizar as necessidades, experiências, comportamentos e objetivos do usuário.
-![Persona](/img/imagejoao.png)
+![Persona](/img/personas.png)
 
 # Mapa de Jornada do Usuário
 
