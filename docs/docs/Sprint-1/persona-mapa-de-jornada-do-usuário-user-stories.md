@@ -3,16 +3,18 @@ sidebar_position: 3
 ---
 
 # Personas
+Esta seção apresenta a persona que serve como um exemplo representativo dos usuários finais. Personas são perfis fictícios, mas realistas, criados com base em pesquisa de usuário para representar um tipo de usuários que pode usar o serviço ou produto. Isso ajuda a equipe de desenvolvimento a visualizar as necessidades, experiências, comportamentos e objetivos do usuário.
 ![Persona](/img/imagejoao.png)
 
 # Mapa de Jornada do Usuário
+
+Os mapas de jornada do usuário ilustram as etapas que diferentes personas podem passar ao interagir com o produto ou serviço. Esses mapas ajudam a identificar pontos de contato críticos e oportunidades para melhorar a experiência do usuário. Cada mapa detalha o fluxo da interação desde o início até o fim, destacando sentimentos, problemas e sucessos em cada etapa.
 
 ![Mapa Jornada Sofia](/img/mapa_sofia.jpg )
 
 ![Mapa Jornada Joao](/img/mapa_joao.jpg)
 
 ![Mapa Jornada Maria](/img/mapa_maria.jpg)
-
 
 # User Stories
 
