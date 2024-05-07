@@ -87,7 +87,3 @@ echo
 sleep 5
 
 kubectl logs deployments/server-deployment -f
-
-while true; do
-    sleep 1
-done
