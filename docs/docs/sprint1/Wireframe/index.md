@@ -1,4 +1,5 @@
 ---
+title: Wireframe
 sidebar_position: 4
 ---
 

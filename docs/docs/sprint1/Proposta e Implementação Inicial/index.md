@@ -1,4 +1,5 @@
 ---
+title: Proposta e Implementação Inicial do Sistema
 sidebar_position: 2
 ---
 
