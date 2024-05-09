@@ -3,19 +3,17 @@ package main
 import (
 	"database/sql"
 
+	"fmt"
 	"log"
 	"net/http"
 	"time"
-	"fmt"
+
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
-	"log"
-	"net/http"
-	"os"
-	"time"
 )
 
 type User struct {
