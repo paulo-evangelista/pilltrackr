@@ -41,6 +41,9 @@ O projeto consiste na criação de uma plataforma móvel para otimizar o gerenci
 Este repositório contém vários diretórios e arquivos importantes. Aqui está um resumo de cada um deles:
 
 - `README.md`: Este arquivo serve como um guia e explicação geral sobre o projeto. É o documento que você está lendo agora.
+- `docs`: Aqui está a documentação do projeto. Utilizamos o docusaurus para facilitar a visualização.
+- `src`: Nesta pasta está o código, o coração de nossa aplicação.
+- `tests`: É necessário realizar teste para validar a solução, armazenamos nesse local.
 
 A estrutura acima é projetada para manter o projeto organizado e fácil de navegar, tanto para desenvolvedores quanto para usuários.
 
