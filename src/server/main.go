@@ -2,8 +2,14 @@ package main
 
 import (
 	"database/sql"
+
+	"log"
+	"net/http"
+	"time"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 	"log"
@@ -15,6 +21,13 @@ import (
 type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type Request struct {
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Timestamp   time.Time `json:"timestamp"`
 }
 
 var db *sql.DB
@@ -30,7 +43,20 @@ func createTable() {
 	if err != nil {
 		log.Fatalf("Failed to create table: %v", err)
 	}
-	log.Println("Table created or verified successfully")
+
+	const queryRequests = `
+	CREATE TABLE IF NOT EXISTS requests (
+		id UUID PRIMARY KEY,
+		name VARCHAR(255) NOT NULL,
+		description TEXT NOT NULL,
+		timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+	);`
+	_, err = db.Exec(queryRequests)
+	if err != nil {
+		log.Fatalf("Failed to create requests table: %v", err)
+	}
+
+	log.Println("Tables created or verified successfully")
 }
 
 func initDB() {
@@ -66,6 +92,8 @@ func initDB() {
 		os.Exit(1)
 	}
 
+	createTable()
+	log.Println("Connected to the database successfully")
 }
 
 func setupRouter() *gin.Engine {
@@ -100,6 +128,46 @@ func setupRouter() *gin.Engine {
 		}
 
 		c.JSON(http.StatusCreated, gin.H{"status": "User created"})
+	})
+
+	r.POST("/requests", func(c *gin.Context) {
+		var newRequest Request
+		if err := c.BindJSON(&newRequest); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
+			return
+		}
+
+		newRequest.ID = uuid.New().String()
+		newRequest.Timestamp = time.Now()
+
+		_, err := db.Exec("INSERT INTO requests (id, name, description,timestamp) VALUES ($1, $2, $3, $4)", newRequest.ID, newRequest.Name, newRequest.Description, newRequest.Timestamp)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save request"})
+			return
+		}
+
+		c.JSON(http.StatusCreated, newRequest)
+	})
+
+	r.GET("/requests", func(c *gin.Context) {
+		rows, err := db.Query("SELECT id, name, description, timestamp FROM requests")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not query requests"})
+			return
+		}
+		defer rows.Close()
+
+		var requests []Request
+		for rows.Next() {
+			var request Request
+			if err := rows.Scan(&request.ID, &request.Name, &request.Description, &request.Timestamp); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not parse requests"})
+				return
+			}
+			requests = append(requests, request)
+		}
+
+		c.JSON(http.StatusOK, requests)
 	})
 
 	return r
