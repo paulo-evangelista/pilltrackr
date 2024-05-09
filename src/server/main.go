@@ -2,14 +2,20 @@ package main
 
 import (
 	"database/sql"
+
 	"log"
 	"net/http"
 	"time"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
+	"log"
+	"net/http"
+	"os"
+	"time"
 )
 
 type User struct {
@@ -54,13 +60,36 @@ func createTable() {
 }
 
 func initDB() {
-	var err error
-	db, err = sql.Open("postgres", "host=db port=5432 user=postgres password=admin123 dbname=postgres sslmode=disable")
-	if err != nil {
-		log.Fatalf("Failed to open database: %v", err)
+
+	host := os.Getenv("DB_HOST")
+	if host == "" {
+		log.Fatal("DB_HOST environment variable is not set.")
 	}
+
+	connStr := fmt.Sprintf("host=%s port=5432 user=postgres password=admin123 dbname=postgres sslmode=disable", host)
+
+	var err error
+
+	for i := 0; i <= 20; i++ {
+		db, err = sql.Open("postgres", connStr)
+		if err != nil {
+			log.Printf("Failed to open database: %v", err)
+			time.Sleep(5 * time.Second)
+			continue
+		}
+		if err = db.Ping(); err != nil {
+			log.Printf("Failed to connect to database: %v", err)
+			time.Sleep(5 * time.Second)
+			continue
+		}
+		createTable()
+		log.Println("Connected to the database successfully")
+		return
+	}
+
 	if err = db.Ping(); err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Printf("[FATAL] Cannot connect to DB, exiting")
+		os.Exit(1)
 	}
 
 	createTable()

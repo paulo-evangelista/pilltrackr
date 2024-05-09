@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - image: postgres:16.2
+          name: postgres
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+
+          env:
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: admin123
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgresdb
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgresdb
+          persistentVolumeClaim:
+            claimName: postgres-pvc

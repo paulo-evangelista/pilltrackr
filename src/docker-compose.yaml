@@ -7,8 +7,24 @@ services:
       - ./server:/app
     ports:
     - 8080:8080
+    environment:
+      DB_HOST: db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  ws-server:
+    container_name: ws-server
+    build: ./ws-server
+    volumes:
+      - ./ws-server:/app
+    ports:
+    - 8081:8081
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
     
   db:
     container_name: postgres_db
@@ -21,6 +37,12 @@ services:
       - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    restart: always
 
 volumes:
   postgres_data:
