@@ -22,6 +22,8 @@ spec:
               value: release
             - name: DB_HOST
               value: postgres-service
+            - name: REDIS_HOST
+              value: redis-service
           resources:
             requests:
               cpu: "100m"

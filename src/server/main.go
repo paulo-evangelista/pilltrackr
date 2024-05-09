@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +13,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
@@ -28,9 +31,10 @@ type Request struct {
 	Timestamp   time.Time `json:"timestamp"`
 }
 
+var rdb *redis.Client
 var db *sql.DB
 
-func createTable() {
+func createTable() error {
 	const query = `
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
@@ -39,7 +43,7 @@ func createTable() {
 	);`
 	_, err := db.Exec(query)
 	if err != nil {
-		log.Fatalf("Failed to create table: %v", err)
+		return fmt.Errorf("failed to create users table: %v", err)
 	}
 
 	const queryRequests = `
@@ -51,47 +55,56 @@ func createTable() {
 	);`
 	_, err = db.Exec(queryRequests)
 	if err != nil {
-		log.Fatalf("Failed to create requests table: %v", err)
+		return fmt.Errorf("failed to create requests table: %v", err)
 	}
 
 	log.Println("Tables created or verified successfully")
+	return nil
 }
 
 func initDB() {
-
 	host := os.Getenv("DB_HOST")
 	if host == "" {
 		log.Fatal("DB_HOST environment variable is not set.")
 	}
 
 	connStr := fmt.Sprintf("host=%s port=5432 user=postgres password=admin123 dbname=postgres sslmode=disable", host)
-
 	var err error
 
-	for i := 0; i <= 20; i++ {
-		db, err = sql.Open("postgres", connStr)
-		if err != nil {
-			log.Printf("Failed to open database: %v", err)
-			time.Sleep(5 * time.Second)
-			continue
-		}
-		if err = db.Ping(); err != nil {
-			log.Printf("Failed to connect to database: %v", err)
-			time.Sleep(5 * time.Second)
-			continue
-		}
-		createTable()
-		log.Println("Connected to the database successfully")
-		return
+	db, err = sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatalf("Failed to open database: %v", err)
 	}
 
-	if err = db.Ping(); err != nil {
-		log.Printf("[FATAL] Cannot connect to DB, exiting")
+	for i := 0; i < 5; i++ { // Reduce the number of retries
+		if err = db.Ping(); err == nil {
+			if err = createTable(); err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Connected to the database successfully")
+			return
+		}
+		log.Printf("Failed to connect to database: %v (retrying)", err)
+		time.Sleep(5 * time.Second)
+	}
+	log.Fatal("[FATAL] Cannot connect to DB after retries, exiting")
+}
+
+func initRedis() {
+	redisHost := os.Getenv("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("REDIS_HOST environment variable is not set.")
 		os.Exit(1)
 	}
 
-	createTable()
-	log.Println("Connected to the database successfully")
+	rdb = redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf("%s:6379", redisHost),
+		DB:   0,
+	})
+
+	if _, err := rdb.Ping(context.Background()).Result(); err != nil {
+		log.Fatalf("Failed to connect to Redis: %v", err)
+	}
 }
 
 func setupRouter() *gin.Engine {
@@ -148,24 +161,42 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.GET("/requests", func(c *gin.Context) {
-		rows, err := db.Query("SELECT id, name, description, timestamp FROM requests")
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not query requests"})
-			return
-		}
-		defer rows.Close()
+		ctx := c.Request.Context()
+		val, err := rdb.Get(ctx, "requests").Result()
 
-		var requests []Request
-		for rows.Next() {
-			var request Request
-			if err := rows.Scan(&request.ID, &request.Name, &request.Description, &request.Timestamp); err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not parse requests"})
+		if err == redis.Nil {
+			// Cache miss; fetch from database
+			rows, err := db.Query("SELECT id, name, description, timestamp FROM requests")
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not query requests"})
 				return
 			}
-			requests = append(requests, request)
+			defer rows.Close()
+			var requests []Request
+			for rows.Next() {
+				var request Request
+				if err := rows.Scan(&request.ID, &request.Name, &request.Description, &request.Timestamp); err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not parse requests"})
+					return
+				}
+				requests = append(requests, request)
+			}
+			// Cache the result
+			serialized, err := json.Marshal(requests)
+			if err == nil {
+				rdb.Set(ctx, "requests", serialized, time.Minute*10) // Cache for 10 minutes
+			}
+			c.JSON(http.StatusOK, requests)
+		} else if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Cache fetch error"})
+		} else {
+			var requests []Request
+			if err := json.Unmarshal([]byte(val), &requests); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse cached data"})
+				return
+			}
+			c.JSON(http.StatusOK, requests)
 		}
-
-		c.JSON(http.StatusOK, requests)
 	})
 
 	return r
@@ -173,6 +204,7 @@ func setupRouter() *gin.Engine {
 
 func main() {
 	initDB()
+	initRedis()
 	r := setupRouter()
 	r.Run(":8080")
 }

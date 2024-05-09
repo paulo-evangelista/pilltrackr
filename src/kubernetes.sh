@@ -11,6 +11,9 @@ cleanup() {
     kubectl delete deployment postgres-deployment
     kubectl delete service postgres-service
 
+    kubectl delete deployment redis-deployment
+    kubectl delete service redis-service
+
     kubectl delete deployment server-deployment
     kubectl delete service server-service
     kubectl delete hpa server-hpa
@@ -62,6 +65,12 @@ kubectl apply -f ./kubernetes/postgres-service.yaml
 
 echo "Aplicando Volume do Postgres no Kubernetes..."
 kubectl apply -f ./kubernetes/postgres-pv.yaml
+
+echo "Aplicando Deployment do Redis no Kubernetes..."
+kubectl apply -f ./kubernetes/redis-deployment.yaml
+
+echo "Aplicando Service do Redis no Kubernetes..."
+kubectl apply -f ./kubernetes/redis-service.yaml
 
 echo "Construindo a imagem Docker para o servidor Go..."
 docker build -t server -f server/prod.Dockerfile server/
