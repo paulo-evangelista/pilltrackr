@@ -4,12 +4,21 @@
 cleanup() {
     echo "Capturado CTRL+C, limpando recursos..."
 
+    if [[ -n $KUBETAIL_PID ]]; then
+        kill -SIGINT $KUBETAIL_PID
+    fi
+
     kubectl delete deployment postgres-deployment
     kubectl delete service postgres-service
 
     kubectl delete deployment server-deployment
     kubectl delete service server-service
     kubectl delete hpa server-hpa
+
+    kubectl delete deployment ws-deployment
+    kubectl delete service ws-service
+    kubectl delete hpa ws-hpa
+    
     echo -e "${Green}Done. O Volume do Postgres não será deletado."
     exit
 }
@@ -66,6 +75,18 @@ kubectl apply -f ./kubernetes/server-service.yaml
 echo "Aplicando Scaler do Server..."
 kubectl apply -f ./kubernetes/server-hpa.yaml
 
+echo "Construindo a imagem Docker para o servidor WS..."
+docker build -t ws-server -f ws-server/prod.Dockerfile ws-server/
+
+echo "Aplicando Deployment do WS no Kubernetes..."
+kubectl apply -f ./kubernetes/ws-deployment.yaml
+
+echo "Aplicando Service do WS no Kubernetes..."
+kubectl apply -f ./kubernetes/ws-service.yaml
+
+echo "Aplicando Scaler do WS..."
+kubectl apply -f ./kubernetes/ws-hpa.yaml
+
 echo "O IP do Minikube é:"
 minikube ip
 
@@ -86,4 +107,10 @@ echo -e "${Green}---------${Default}"
 echo
 sleep 5
 
-kubectl logs deployments/server-deployment -f
+chmod +x ./kubernetes/kubetail.sh
+./kubernetes/kubetail.sh server-deployment,ws-deployment -k pod -z 1 &
+KUBETAIL_PID=$!
+
+wait $KUBETAIL_PID
+
+cleanup
