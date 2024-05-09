@@ -46,17 +46,24 @@ O banco de dados PostgreSQL é utilizado para persistir os dados dos usuários. 
 
 ### Testes de Carga
 
-Os testes de carga foram configurados utilizando o Locust, uma ferramenta de teste de carga de código aberto. Os testes focam na criação de usuários através da rota `/users` para avaliar o desempenho sob carga.
+Os testes de carga foram configurados utilizando o Locust, uma ferramenta de teste de carga de código aberto. Atualmente, os testes são concentrados em duas principais funcionalidades: criação de usuários através da rota /users e operações relacionadas a pedidos, manipuladas pelos scripts em locustRequest. Este último script é nosso foco principal, tratando tanto do salvamento de pedidos no banco de dados quanto da recuperação desses registros.
 
 #### Executando os Testes de Carga
 
-Para executar os testes de carga, navegue até a pasta locust que está dentro de tests na raiz do projeto e execute:
+Para realizar os testes de carga, siga os passos abaixo:
 
-```bash
-    locust -f locustfile.py
-```
+- Navegue até a pasta tests/locust localizada na raiz do projeto.
+- Execute os comandos apropriados informados no arquivo "instructions.txt" para iniciar os testes com o Locust.
 
-Isso iniciará a interface do Locust, onde você pode iniciar os testes e visualizar os resultados em tempo real.
+Isso abrirá a interface do Locust, permitindo que você inicie os testes e monitore os resultados em tempo real através da interface web.
+
+#### Documentação dos Resultados
+
+Os resultados dos testes de carga serão documentados em detalhes em um relatório em formato PDF. Este documento incluirá métricas importantes como o número total de requisições por segundo, tempo de resposta e o número de usuários simulados. Esse relatório proporciona uma visão abrangente do desempenho da aplicação sob diferentes condições de carga, permitindo uma análise precisa da escalabilidade e robustez do sistema.
+
+Certifique-se de consultar o relatório em PDF para ter uma visão detalhada dos resultados do teste de carga.
+
+[Download do Relatório de Teste de Carga](/LocustRequest.pdf)
 
 ## Conclusão 
 
