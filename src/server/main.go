@@ -167,6 +167,7 @@ func setupRouter() *gin.Engine {
 		if err == redis.Nil {
 			// Cache miss; fetch from database
 			rows, err := db.Query("SELECT id, name, description, timestamp FROM requests")
+			fmt.Print("from database")
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not query requests"})
 				return
@@ -184,7 +185,7 @@ func setupRouter() *gin.Engine {
 			// Cache the result
 			serialized, err := json.Marshal(requests)
 			if err == nil {
-				rdb.Set(ctx, "requests", serialized, time.Minute*10) // Cache for 10 minutes
+				rdb.Set(ctx, "requests", serialized, time.Second*15) // Cache for 10 minutes
 			}
 			c.JSON(http.StatusOK, requests)
 		} else if err != nil {
