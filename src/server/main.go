@@ -24,9 +24,33 @@ type User struct {
 	Password string `json:"password"`
 }
 
+type ItemType struct {
+	Id        	string    `json:"id"`
+	Item      	string    `json:"item"`
+}
+// mudar tipos dos ids para int?
 type Request struct {
-	ID          string    `json:"id"`
-	Name        string    `json:"name"`
+	Id          string    `json:"id"`
+	ItemId      string    `json:"itemId"`
+	Description string    `json:"description"`
+	Timestamp   time.Time `json:"timestamp"`
+}
+
+type ReportType struct {
+	Id          string    `json:"id"`
+	Report      string    `json:"report"`
+}
+
+type Report struct {
+	Id          string    `json:"id"`
+	ReportId    string    `json:"reportId"`
+	Description string    `json:"description"`
+	Timestamp   time.Time `json:"timestamp"`
+}
+
+type Log struct {
+	Id          string    `json:"id"`
+	EntryId     string    `json:"entryId"`
 	Description string    `json:"description"`
 	Timestamp   time.Time `json:"timestamp"`
 }
@@ -45,12 +69,55 @@ func createTable() error {
 	if err != nil {
 		return fmt.Errorf("failed to create users table: %v", err)
 	}
-
+	// queryTypeRequests (?)
+	const typeRequests = `
+	CREATE TABLE IF NOT EXISTS itemType (
+		id UUID PRIMARY KEY,
+		item VARCHAR(255) NOT NULL,
+	);`
+	_, err = db.Exec(queryRequests)
+	if err != nil {
+		return fmt.Errorf("failed to create requests table: %v", err)
+	}
+	// requests ou request (mudar nome da struct)
 	const queryRequests = `
 	CREATE TABLE IF NOT EXISTS requests (
 		id UUID PRIMARY KEY,
-		name VARCHAR(255) NOT NULL,
+		ItemId VARCHAR(255) NOT NULL,
 		description TEXT NOT NULL,
+		timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+	);`
+	_, err = db.Exec(queryRequests)
+	if err != nil {
+		return fmt.Errorf("failed to create requests table: %v", err)
+	}
+
+	const typeReports = `
+	CREATE TABLE IF NOT EXISTS reportType (
+		id UUID PRIMARY KEY,
+		report VARCHAR(255) NOT NULL,
+	);`
+	_, err = db.Exec(queryRequests)
+	if err != nil {
+		return fmt.Errorf("failed to create requests table: %v", err)
+	}
+	// requests ou request (mudar nome da struct)
+	const queryReports = `
+	CREATE TABLE IF NOT EXISTS reports (
+		id UUID PRIMARY KEY,
+		reportId VARCHAR(255) NOT NULL,
+		description TEXT NOT NULL,
+		timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+	);`
+	_, err = db.Exec(queryRequests)
+	if err != nil {
+		return fmt.Errorf("failed to create requests table: %v", err)
+	}
+
+	const queryLogs = `
+	CREATE TABLE IF NOT EXISTS log (
+		id UUID PRIMARY KEY,
+		entryId VARCHAR(255) NOT NULL,
 		timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 	);`
 	_, err = db.Exec(queryRequests)
