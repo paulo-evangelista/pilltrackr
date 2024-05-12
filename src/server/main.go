@@ -18,6 +18,7 @@ func main() {
 	}
 
 	controllers.InitClientRoutes(r, clients)
+	controllers.InitAdminRoutes(r, clients)
 
 	r.Run(":8080")
 }
