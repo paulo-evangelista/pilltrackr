@@ -20,7 +20,7 @@ A primeira sprint do projeto foi dedicada ao entendimento inicial da proposta ap
 
 ## Sprint II
 
-Posteriormente à validação inicial do entendimento do problema e da solução proposta pelo grupo, os feedbacks fornecidos pelo parceiro foram considerados para que a equipe de desenvolvimento pudesse realizar as adaptações necessárias e avançar nos artefatos que compõem a prova de conceito. Desse modo, na segunda Sprint Review, foram apresentadas as modificações realizadas na interface de usuário idealizada para o aplicativo, as tecnologias a serem utilizadas e a segunda versão da arquitetura. Para além dos elementos técnicos, a equipe evoluiu sua base de conhecimentos no que concerne às análises de negócios, uma vez que foram desenvolvidas a análise financeira e a análise PESTEL da solução.
+Posteriormente à validação inicial do entendimento do problema e da solução proposta pelo grupo, os feedbacks fornecidos pelo parceiro foram considerados para que a equipe de desenvolvimento pudesse realizar as adaptações necessárias e avançar nos artefatos que compõem a prova de conceito. Desse modo, na segunda Sprint Review, foram apresentadas as modificações realizadas na interface de usuário idealizada para o aplicativo, as tecnologias a serem utilizadas e a segunda versão da arquitetura, bem como a implementação inicial do back-end. Para além dos elementos técnicos, a equipe evoluiu sua base de conhecimentos no que concerne às análises de negócios, uma vez que foram desenvolvidas a análise financeira e a análise PESTEL da solução.
 
 [Link da Apresentação](https://www.canva.com/design/DAGEyqM2EJU/zaw7sEu_0zSlcw6intv4fg/view?utm_content=DAGEyqM2EJU&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
