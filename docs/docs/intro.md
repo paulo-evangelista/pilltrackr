@@ -6,12 +6,26 @@ sidebar_position: 1
 
 Explore a documentação de nosso projeto, dividida por sprints para facilitar o acompanhamento e o entendimento do progresso e dos conteúdos abordados.
 
-## Comece Aqui
+## Sprint I
 
-Este guia o ajudará a entender a estrutura do nosso projeto e como navegar pelos diversos recursos disponíveis.
+A primeira sprint do projeto foi dedicada ao entendimento inicial da proposta apresentada pelo parceiro de projeto do atual módulo: o Hospital Sírio-Libanês. A partir da introdução ao problema a ser solucionado, foi possível realizar as análises de negócios apropriadas para o contexto de desenvolvimento do produto, refletir sobre a jornada do usuário no que concerne ao uso da aplicação e propor a versão inicial da arquitetura da solução. Abaixo, é possível conferir a apresentação desenvolvida com a finalidade de validar os elementos mencionados com o parceiro após as duas primeiras semanas do projeto.
 
-### O que você encontrará
+[Link da Apresentação](https://www.canva.com/design/DAGDfBce7es/EZ7VDlYxEuZa39gu3vB-Eg/view?utm_content=DAGDfBce7es&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
-- Documentação técnica detalhada para cada sprint
-- Tutoriais passo a passo
-- Exemplos práticos aplicados ao nosso projeto
+
+<iframe loading="lazy"
+    style={{ display: 'block', margin: 'auto', width: '100%', height: '55.7vh' }}
+    src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAGDfBce7es&#x2F;pu4VF2frkxWTK35Y4SfuXw&#x2F;view?embed">
+</iframe>
+
+## Sprint II
+
+Posteriormente à validação inicial do entendimento do problema e da solução proposta pelo grupo, os feedbacks fornecidos pelo parceiro foram considerados para que a equipe de desenvolvimento pudesse realizar as adaptações necessárias e avançar nos artefatos que compõem a prova de conceito. Desse modo, na segunda Sprint Review, foram apresentadas as modificações realizadas na interface de usuário idealizada para o aplicativo, as tecnologias a serem utilizadas e a segunda versão da arquitetura. Para além dos elementos técnicos, a equipe evoluiu sua base de conhecimentos no que concerne às análises de negócios, uma vez que foram desenvolvidas a análise financeira e a análise PESTEL da solução.
+
+[Link da Apresentação](https://www.canva.com/design/DAGEyqM2EJU/zaw7sEu_0zSlcw6intv4fg/view?utm_content=DAGEyqM2EJU&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+
+
+<iframe loading="lazy"
+    style={{ display: 'block', margin: 'auto', width: '100%', height: '55.7vh' }}
+    src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAGEyqM2EJU&#x2F;yGp7tzc9UBFRYnYinvq3YA&#x2F;view?embed" >
+</iframe>

@@ -8,7 +8,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Grupo-05',
+  title: 'Grupo 05',
   tagline: 'Inovando em Tecnologia e Saúde',
   favicon: 'img/favicon.ico',
 
@@ -56,7 +56,7 @@ const config = {
     ({
       image: 'img/logo.webp',
       navbar: {
-        title: 'Grupo-05',
+        title: 'Grupo 05',
         logo: {
           alt: 'Hospital Logo',
           src: 'img/logo.webp',
