@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"g5/server/db"
 	"g5/server/types"
+	"g5/server/middlewares"
 	"g5/server/controllers"
 
 )
@@ -17,6 +18,9 @@ func main() {
 		Pg: db.SetupPostgres(),
 	}
 
+	r.Use(middlewares.AuthUser());
+
+	controllers.InitRequestRoutes(r, clients)
 	controllers.InitClientRoutes(r, clients)
 	controllers.InitAdminRoutes(r, clients)
 
