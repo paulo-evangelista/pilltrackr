@@ -5,13 +5,19 @@ sidebar_position: 5
 
 # Arquitetura
 
+A arquitetura do sistema representa a organização estrutural dos componentes do software e suas interações. Ela define a estrutura geral e o comportamento do sistema, ajudando a garantir que todos os elementos funcionem em conjunto de maneira eficiente e escalável. A imagem acima ilustra a arquitetura da solução, mostrando os diferentes módulos e como eles se comunicam entre si.
+
 ![Arquitetura da Soluçao](/img/arch-v2.png)
 
 ## Modelagem do Banco de Dados
 
+A modelagem do banco de dados é o processo de criar um modelo de dados detalhado do banco de dados, que define a estrutura das tabelas e suas relações. A modelagem é essencial para garantir a integridade dos dados e otimizar o desempenho do banco de dados. A imagem acima mostra a estrutura das tabelas e as relações entre elas, fornecendo uma visão clara de como os dados são organizados e armazenados.
+
 ![Modelagem Banco de Dados](/img/modelagem-db-m10-v3.png)
 
 ## Descrição das Tabelas 
+
+A seguir estão as descrições das tabelas utilizadas no banco de dados, incluindo suas colunas e tipos de dados:
 
 ### User
 

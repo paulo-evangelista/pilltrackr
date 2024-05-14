@@ -6,10 +6,10 @@ import (
 
 // Usuarios
 type User struct {
-	gorm.Model
-	Email    string `gorm:"unique;not null"`
-	Password string
-	Requests []Request
+    gorm.Model
+    Email    string `gorm:"unique;not null"`
+    Password string `gorm:"not null"`
+    Requests []Request
 }
 
 // Pedidos
@@ -20,13 +20,14 @@ type Request struct {
 	Description string
 	Messages    []Message
 	Closed      bool `gorm:"default:false"`
+	IsUrgent    bool `gorm:"default:false"`
 }
 
 // Produto (Equipamentos, insumos, remédios, etc.)
 type Product struct {
-	gorm.Model
-	Name string
-	Code string `gorm:"unique"` // Código do item (código de barras?)
+    gorm.Model
+    Name string `gorm:"not null"`
+    Code string `gorm:"unique;not null"` // Código do item (código de barras?)
 }
 
 // Mensagem
