@@ -18,7 +18,7 @@ func SetupPostgres() *gorm.DB {
 		os.Exit(1)
 	}
 
-	dsn := fmt.Sprintf("host=%s user=postgres password=admin1234 dbname=postgres port=5432 sslmode=disable TimeZone=America/Sao_Paulo", dbHost)
+	dsn := fmt.Sprintf("host=%s user=postgres password=admin123 dbname=postgres port=5432 sslmode=disable TimeZone=America/Sao_Paulo", dbHost)
 
 	dbClient, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -44,7 +44,7 @@ func SetupPostgres() *gorm.DB {
 		os.Exit(1)
 	}
 
-	fmt.Println("Inicialização do banco de dados concluída")
+	fmt.Println(" -> Inicialização Postgres e Redis concluída")
 
 	return dbClient
 }

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"g5/server/types"
 	"g5/server/services"
+	"g5/server/types"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,26 +12,29 @@ type createProductBody struct {
 }
 
 func InitAdminRoutes(r *gin.Engine, clients types.Clients) {
+	admin := r.Group("/admin")
+	{
 
-	r.GET("/admin/ping", func(c *gin.Context) {
-		c.JSON(200, "Hello, Admin!")
-	})
+		admin.GET("/ping", func(c *gin.Context) {
+			c.JSON(200, "Hello, Admin!")
+		})
 
-	r.POST("/admin/createProduct", func(c *gin.Context) {
-		var req createProductBody
-		if err := c.BindJSON(&req); err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
+		admin.POST("/createProduct", func(c *gin.Context) {
+			var req createProductBody
+			if err := c.BindJSON(&req); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
 
-		res, err := services.CreateProduct(clients, req.Name, req.Code)
+			res, err := services.CreateProduct(clients, req.Name, req.Code)
 
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
+			if err != nil {
+				c.JSON(500, gin.H{"error": err.Error()})
+				return
+			}
 
-		c.JSON(200, gin.H{"message":res})
+			c.JSON(200, gin.H{"message": res})
 
-	})
+		})
+	}
 }

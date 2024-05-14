@@ -7,17 +7,21 @@ import (
 
 func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 
-	r.POST("/request/create", func(c *gin.Context) {
-		c.JSON(200, "Hello, requests!")
-	})
+	requests := r.Group("/request")
+	{
 
-	r.GET("/request/:id", func(c *gin.Context) {
-		c.JSON(200, "Hello, requests!")
-	})
-	
-	// Retorna as mensagens do chat de um request
-	// Essa rota retorna as mensagens PASSADAS. O envio e recebiemnto de mensagens em tempo real é feito pelo WebSocket
-	r.GET("/request/getPastMessages", func(c *gin.Context) {
-		c.JSON(200, "Hello, requests!")
-	})
+		requests.POST("/create", func(c *gin.Context) {
+			c.JSON(200, "Hello, requests!")
+		})
+
+		requests.GET("/:id", func(c *gin.Context) {
+			c.JSON(200, "Hello, requests!")
+		})
+
+		// Retorna as mensagens do chat de um request
+		// Essa rota retorna as mensagens PASSADAS. O envio e recebiemnto de mensagens em tempo real é feito pelo WebSocket
+		requests.GET("/getPastMessages", func(c *gin.Context) {
+			c.JSON(200, "Hello, requests!")
+		})
+	}
 }

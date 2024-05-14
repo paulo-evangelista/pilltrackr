@@ -20,6 +20,7 @@ type Request struct {
 	Description string
 	Messages    []Message
 	Closed      bool `gorm:"default:false"`
+	IsUrgent    bool `gorm:"default:false"`
 }
 
 // Produto (Equipamentos, insumos, remédios, etc.)
