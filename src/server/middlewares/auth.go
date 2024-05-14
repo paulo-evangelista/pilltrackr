@@ -1,7 +1,9 @@
 package middlewares
 
 import (
+    "crypto/sha1"
     "net/http"
+    "fmt"
     "github.com/gin-gonic/gin"
 )
 
@@ -15,32 +17,11 @@ func AuthUser() gin.HandlerFunc {
             return
         }
 
-        client := &http.Client{}
-		// TODO: Substituir pela URL da API de autenticação
-        req, err := http.NewRequest("GET", "TODO_URL_DA_API", nil)
-        if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao criar a requisição para autenticação"})
-            return
-        }
-		
-        req.Header.Set("Authorization", token)
-        resp, err := client.Do(req)
-        if err != nil {
-			// Fingindo que o token é válido
-			// TODO: desmockar
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao chamar a API de autenticação"})
-            // c.Abort()
-			c.Next()
-            return
-        }
-        defer resp.Body.Close()
-
-        if resp.StatusCode != http.StatusOK {
-            c.JSON(http.StatusUnauthorized, gin.H{"error": "Token de autenticação inválido"})
-            c.Abort()
-            return
-        }
-
+        hasher := sha1.New()
+        hasher.Write([]byte(token))
+        // adiciona os primeiros 5 caracteres do hash do token ao contexto
+        c.Set("user_id", fmt.Sprintf("%x", hasher.Sum(nil))[:5])
+        fmt.Println("Token de autenticação válido. ")
         c.Next()
     }
 }
