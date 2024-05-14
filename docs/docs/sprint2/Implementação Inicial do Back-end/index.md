@@ -44,6 +44,10 @@ O servidor oferece uma rota POST `/users` que permite adicionar um usuário novo
 
 O banco de dados PostgreSQL é utilizado para persistir os dados dos usuários. Está configurado para iniciar juntamente com o servidor através do Docker Compose, garantindo a persistência necessária.
 
+### Sistema de Cache com Redis
+
+Para melhorar a performance do backend, foi adicionado o Redis como sistema de cache. O Redis é um banco de dados em memória que permite armazenar e recuperar dados rapidamente, o que é especialmente útil para reduzir a carga de consultas frequentes ao banco de dados PostgreSQL.
+
 ### Testes de Carga
 
 Os testes de carga foram configurados utilizando o Locust, uma ferramenta de teste de carga de código aberto. Atualmente, os testes são concentrados em duas principais funcionalidades: criação de usuários através da rota /users e operações relacionadas a pedidos, manipuladas pelos scripts em locustRequest. Este último script é nosso foco principal, tratando tanto do salvamento de pedidos no banco de dados quanto da recuperação desses registros.
