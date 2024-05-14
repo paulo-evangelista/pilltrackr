@@ -5,6 +5,6 @@ server/tmp
 server/server
 server/main
 
-ws-server/temp
+ws-server/tmp
 ws-server/ws-server
 ws-server/main
