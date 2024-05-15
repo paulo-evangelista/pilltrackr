@@ -5,10 +5,15 @@ import (
 )
 
 // Usuarios
+// InternalId é o id do usuário no sistema de autenticação do sirio
+// Esse ID já passou pelo middleware de autenticação, então podemos confiar nele
+// Portanto, gostaria de lembrar que não precisamos salvar a senha do usuário no banco de dados
 type User struct {
     gorm.Model
-    Email    string `gorm:"unique;not null"`
-    Password string `gorm:"not null"`
+	InternalId string `gorm:"unique;not null"`
+	Position   string
+	Name	   string 
+    Email    string
     Requests []Request
 }
 
