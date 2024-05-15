@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"g5/server/services"
 	"g5/server/types"
-
+	mw "g5/server/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
 type createRequestBody struct {
-	Email        string   `json:"email" binding:"required"`
 	ProductCodes []string `json:"productCodes"`
 	Urgent       bool     `json:"urgent"`
 	Description  string   `json:"description"`
@@ -36,7 +35,6 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 			services.CreateRequest(
 				c,
 				clients,
-				req.Email,
 				req.ProductCodes,
 				req.Urgent || false,
 				req.Description,
@@ -44,14 +42,18 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 
 		})
 
-		requests.GET("/:id", func(c *gin.Context) {
-			c.JSON(200, "Hello, requests!")
+		requests.GET("/get/:id", mw.IsAdmin(), func(c *gin.Context) {
+			services.GetRequest(c, clients, c.Param("id"))
+		})
+
+		requests.GET("/getAll",mw.IsAdmin(), func(c *gin.Context) {
+			services.GetAllRequests(c, clients)
 		})
 
 		// Retorna as mensagens do chat de um request
 		// Essa rota retorna as mensagens PASSADAS. O envio e recebiemnto de mensagens em tempo real é feito pelo WebSocket
-		requests.GET("/getPastMessages", func(c *gin.Context) {
-			c.JSON(200, "Hello, requests!")
+		requests.GET("/:id/messages", func(c *gin.Context) {
+			services.GetAllMessages(c, clients, c.Param("id"))
 		})
 	}
 }

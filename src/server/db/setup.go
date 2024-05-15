@@ -26,22 +26,20 @@ func SetupPostgres() *gorm.DB {
 		os.Exit(1)
 	}
 
-	err = dbClient.AutoMigrate(&Request{})
-	if err != nil {
-		log.Fatal("Error migrating Request")
-		os.Exit(1)
+	models := []interface{}{
+		&Request{},
+		&Product{},
+		&User{},
+		&Message{},
+
 	}
 
-	err = dbClient.AutoMigrate(&Product{})
-	if err != nil {
-		log.Fatal("Error migrating ItemType")
-		os.Exit(1)
-	}
-
-	err = dbClient.AutoMigrate(&User{})
-	if err != nil {
-		log.Fatal("Error migrating User")
-		os.Exit(1)
+	for _, model := range models {
+		err = dbClient.AutoMigrate(model)
+		if err != nil {
+			log.Fatalf("Error migrating %v", model)
+			os.Exit(1)
+		}
 	}
 
 	fmt.Println(" -> Inicialização Postgres e Redis concluída")

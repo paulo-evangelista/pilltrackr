@@ -59,10 +59,33 @@ func AssertUserExistance(pg *gorm.DB) gin.HandlerFunc {
 			fmt.Println("-> [AssertUserExistanceMiddleware] Novo usuário criado. user_internal_id: ", contextId)
 			c.Next()
 			return
-		}
-		
+
+		} 
+
 		fmt.Println("-> [AssertUserExistanceMiddleware] Usuário existe. ("+contextId+")")
+
+		// Verifica se o usuário é um administrador
+		// TODO: o internalID d033e2 carresponde ao header "Authorization: admin", para que possamos testar a funcionalidade de administrador
+		// Remover isso em produção
+		if user.IsAdmin || user.InternalId == "d033e2" {
+			fmt.Println("-> [AssertUserExistanceMiddleware] Usuário é um administrador.")
+			c.Set("is_admin", true)
+		}
+
 		c.Next()
 
+	}
+}
+
+// Middleware que verifica se o usuário é um administrador
+func IsAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		isAdmin := c.GetBool("is_admin")
+		if !isAdmin {
+			c.JSON(403, gin.H{"error": "Você não tem permissão para acessar este recurso"})
+			c.Abort()
+			return
+		}
+		c.Next()
 	}
 }

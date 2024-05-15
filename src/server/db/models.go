@@ -9,12 +9,14 @@ import (
 // Esse ID já passou pelo middleware de autenticação, então podemos confiar nele
 // Portanto, gostaria de lembrar que não precisamos salvar a senha do usuário no banco de dados
 type User struct {
-    gorm.Model
+	gorm.Model
 	InternalId string `gorm:"unique;not null"`
 	Position   string
-	Name	   string 
-    Email    string
-    Requests []Request
+	Name       string
+	Email      string
+	Requests   []Request
+	Messages   []Message
+	IsAdmin    bool `gorm:"default:false"` // true se o usuário é da central, false se é um usuário comum
 }
 
 // Pedidos
@@ -30,9 +32,9 @@ type Request struct {
 
 // Produto (Equipamentos, insumos, remédios, etc.)
 type Product struct {
-    gorm.Model
-    Name string `gorm:"not null"`
-    Code string `gorm:"unique;not null"` // Código do item (código de barras?)
+	gorm.Model
+	Name string `gorm:"not null"`
+	Code string `gorm:"unique;not null"` // Código do item (código de barras?)
 }
 
 // Mensagem
@@ -42,4 +44,5 @@ type Message struct {
 	RequestID  uint
 	Content    string
 	SentByUser bool // true se a mensagem foi enviada pelo usuário, false se foi enviada pela central
+	UserID     uint
 }
