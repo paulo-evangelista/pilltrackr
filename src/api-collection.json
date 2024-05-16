@@ -1,0 +1,203 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "m10mod2",
+    "dateExported": "2024-05-16T04:18:54.354Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "86ac2691-d2c9-46d6-bc4c-973ce0a0d57c",
+            "name": "admin",
+            "containerId": "",
+            "created": "2024-05-15T17:53:03.072Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "31147c17-620e-473d-9b0b-ae93fdfe35f4",
+            "name": "client",
+            "containerId": "",
+            "created": "2024-05-15T18:00:40.293Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "757513ac-2442-41de-a9ad-6b7b2e7781c3",
+            "name": "requests",
+            "containerId": "",
+            "created": "2024-05-15T18:17:46.832Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "6dda13fb-541e-44de-a318-c30c0e026cfb",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "86ac2691-d2c9-46d6-bc4c-973ce0a0d57c",
+            "name": "Torna um usuário admin",
+            "url": "localhost:8080/admin/makeAdmin",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-05-15T17:53:19.738Z",
+            "modified": "2024-05-15T18:05:06.150Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "admin"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"paulo@gmail.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "33a3a110-4298-4346-b472-1721c1248adf",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "86ac2691-d2c9-46d6-bc4c-973ce0a0d57c",
+            "name": "ping",
+            "url": "localhost:8080/admin/ping",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-15T17:59:11.794Z",
+            "modified": "2024-05-15T18:00:05.206Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "asdasd"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0e8d5f95-3168-45f1-9021-93a19a525ee2",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "31147c17-620e-473d-9b0b-ae93fdfe35f4",
+            "name": "Cria um usuário ou atualiza um já existente",
+            "url": "localhost:8080/client/updateUser",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-05-15T18:00:55.430Z",
+            "modified": "2024-05-15T18:04:43.845Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "paulo"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Paulo\",\n  \"email\": \"paulo@gmail.com\",\n  \"position\": \"Gerente setorial\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "03f03608-53dd-47b1-8046-cdefec9696c0",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "757513ac-2442-41de-a9ad-6b7b2e7781c3",
+            "name": "Criar um request",
+            "url": "localhost:8080/request/create",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-05-15T18:17:53.303Z",
+            "modified": "2024-05-15T18:54:35.232Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "paulo"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"productCodes\": [\"asd-34451\"]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1c39582d-33fb-43e5-be58-fa5a3e304c51",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "86ac2691-d2c9-46d6-bc4c-973ce0a0d57c",
+            "name": "Adicionar um novo produto/medicamento/ensumo",
+            "url": "localhost:8080/admin/createProduct",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-05-15T18:24:13.126Z",
+            "modified": "2024-05-15T18:25:30.587Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "paulo"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"dipirona EDDS 2MG/cap\",\n  \"code\": \"asd-34451\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "026b45f4-da76-4dab-8923-3d875542c67d",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "757513ac-2442-41de-a9ad-6b7b2e7781c3",
+            "name": "Pega um request",
+            "url": "localhost:8080/request/get/3",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-05-15T19:33:57.073Z",
+            "modified": "2024-05-15T20:04:52.085Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "asd"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a0501362-c2e2-40a8-82aa-b441c943f985",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "757513ac-2442-41de-a9ad-6b7b2e7781c3",
+            "name": "Pega todos os requests",
+            "url": "localhost:8080/request/getAll",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-05-15T20:07:42.323Z",
+            "modified": "2024-05-15T20:08:03.578Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "d"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "495ba4e9-5080-48e8-89a9-4f3aca39799b",
+            "colId": "014c37f2-dea5-4aec-b46c-36192fc2312c",
+            "containerId": "757513ac-2442-41de-a9ad-6b7b2e7781c3",
+            "name": "Pegar todas as mensagens",
+            "url": "localhost:8080/request/3/messages",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-15T20:18:07.152Z",
+            "modified": "2024-05-15T20:18:22.493Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "asd"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
