@@ -1,13 +1,14 @@
 package db
 
 import (
-	"os"
+	"context"
 	"fmt"
 	"log"
-	"context"
-	"gorm.io/gorm"
-	"gorm.io/driver/postgres"
+	"os"
+
 	"github.com/redis/go-redis/v9"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func SetupPostgres() *gorm.DB {
@@ -29,9 +30,9 @@ func SetupPostgres() *gorm.DB {
 	models := []interface{}{
 		&Request{},
 		&Product{},
+		&Report{},
 		&User{},
 		&Message{},
-
 	}
 
 	for _, model := range models {
@@ -53,12 +54,12 @@ func SetupRedis() *redis.Client {
 		log.Fatal("REDIS_HOST environment variable is not set.")
 		os.Exit(1)
 	}
-	
+
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:6379", redisHost),
 		DB:   0,
 	})
-	
+
 	if _, err := redisClient.Ping(context.Background()).Result(); err != nil {
 		log.Fatalf("Failed to connect to Redis: %v", err)
 		os.Exit(1)

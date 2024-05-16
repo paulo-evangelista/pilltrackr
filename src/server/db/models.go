@@ -25,6 +25,7 @@ type Request struct {
 	UserId      uint
 	Products    []Product `gorm:"many2many:request_products;"`
 	Description string
+	ReportId    uint
 	Messages    []Message
 	Closed      bool `gorm:"default:false"`
 	IsUrgent    bool `gorm:"default:false"`
@@ -35,6 +36,12 @@ type Product struct {
 	gorm.Model
 	Name string `gorm:"not null"`
 	Code string `gorm:"unique;not null"` // Código do item (código de barras?)
+}
+
+type Report struct {
+	gorm.Model
+	Requests []Request
+	Name     string `gorm:"not null"`
 }
 
 // Mensagem
