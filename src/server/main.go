@@ -19,6 +19,7 @@ func main() {
 	}
 
 	r.Use(middlewares.AuthUser());
+	r.Use(middlewares.AssertUserExistance(clients.Pg));
 
 	controllers.InitRequestRoutes(r, clients)
 	controllers.InitClientRoutes(r, clients)

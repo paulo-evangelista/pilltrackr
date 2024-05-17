@@ -1,13 +1,14 @@
 package db
 
 import (
-	"os"
+	"context"
 	"fmt"
 	"log"
-	"context"
-	"gorm.io/gorm"
-	"gorm.io/driver/postgres"
+	"os"
+
 	"github.com/redis/go-redis/v9"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func SetupPostgres() *gorm.DB {
@@ -26,22 +27,20 @@ func SetupPostgres() *gorm.DB {
 		os.Exit(1)
 	}
 
-	err = dbClient.AutoMigrate(&Request{})
-	if err != nil {
-		log.Fatal("Error migrating Request")
-		os.Exit(1)
+	models := []interface{}{
+		&Request{},
+		&Product{},
+		&Report{},
+		&User{},
+		&Message{},
 	}
 
-	err = dbClient.AutoMigrate(&Product{})
-	if err != nil {
-		log.Fatal("Error migrating ItemType")
-		os.Exit(1)
-	}
-
-	err = dbClient.AutoMigrate(&User{})
-	if err != nil {
-		log.Fatal("Error migrating User")
-		os.Exit(1)
+	for _, model := range models {
+		err = dbClient.AutoMigrate(model)
+		if err != nil {
+			log.Fatalf("Error migrating %v", model)
+			os.Exit(1)
+		}
 	}
 
 	fmt.Println(" -> Inicialização Postgres e Redis concluída")
@@ -55,12 +54,12 @@ func SetupRedis() *redis.Client {
 		log.Fatal("REDIS_HOST environment variable is not set.")
 		os.Exit(1)
 	}
-	
+
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:6379", redisHost),
 		DB:   0,
 	})
-	
+
 	if _, err := redisClient.Ping(context.Background()).Result(); err != nil {
 		log.Fatalf("Failed to connect to Redis: %v", err)
 		os.Exit(1)

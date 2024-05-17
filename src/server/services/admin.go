@@ -24,3 +24,24 @@ func CreateProduct(clients types.Clients, productName string, productCode string
 
 	return "success", nil
 }
+
+func MakeAdmin(clients types.Clients, email string) error {
+	
+	var user db.User
+
+	tx := clients.Pg.Where("email = ?", email).First(&user)
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	user.IsAdmin = true
+
+	tx = clients.Pg.Save(&user)
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}

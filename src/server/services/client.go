@@ -9,6 +9,14 @@ import (
 	"encoding/json"
 )
 
+type UserUpdateParams struct {
+	Name  *string `json:"name"`
+	Email *string `json:"email"`
+	Position *string `json:"position"`
+}
+
+
+
 func GetAllProducts(clients types.Clients) ([]byte, error) {
 
 	redisRes, err := clients.Redis.Get(context.Background(), "products").Result()
@@ -36,4 +44,23 @@ func GetAllProducts(clients types.Clients) ([]byte, error) {
 	}
 	
 	return []byte(redisRes), nil
+}
+
+func UpdateUser(clients types.Clients, userInternalId string, params UserUpdateParams ) error {
+
+	updateData := make(map[string]interface{})
+
+	if params.Name != nil {
+		updateData["name"] = *params.Name
+	}
+
+	if params.Email != nil {
+		updateData["email"] = *params.Email
+	}
+
+	if params.Position != nil {
+		updateData["position"] = *params.Position
+	}
+
+	return clients.Pg.Model(&db.User{}).Where("internal_id = ?", userInternalId).Updates(updateData).Error
 }
