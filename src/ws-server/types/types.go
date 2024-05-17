@@ -1,18 +1,19 @@
 package types
 
 import (
+	"g5/ws-server/db"
 	"github.com/gorilla/websocket"
 )
 
 type Client struct {
 	Conn    *websocket.Conn
-	Id      int
+	Id      uint
 	IsAdmin bool
 }
 
 type IncomingMessage struct {
-	From    int    `json:"from"`
-	Request int    `json:"request"`
+	From    uint	// Esse campo não vem do cliente, é preenchido no servidor
+	Request uint   `json:"request"`
 	Content string `json:"content"`
 }
 
@@ -22,4 +23,8 @@ type IncomingError struct {
 
 type IncomingSuccess struct {
 	Message string `json:"message"`
+}
+
+type OutgoingMessage struct {
+	Message db.Message `json:"message"`
 }

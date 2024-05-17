@@ -39,10 +39,12 @@ type Product struct {
 
 // Mensagem
 type Message struct {
-	Id         int `gorm:"primaryKey; autoIncrement"`
-	SentAt     int `gorm:"autoCreateTime:milli"`
+	gorm.Model
 	RequestID  uint
+	Request	Request
 	Content    string
 	SentByUser bool // true se a mensagem foi enviada pelo usuário, false se foi enviada pela central
 	UserID     uint
+	User       User
 }
+
