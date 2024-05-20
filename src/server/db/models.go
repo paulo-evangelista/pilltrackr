@@ -48,9 +48,17 @@ type Report struct {
 type Message struct {
 	gorm.Model
 	RequestID  uint
-	Request	Request
+	Request    Request
 	Content    string
 	SentByUser bool // true se a mensagem foi enviada pelo usuário, false se foi enviada pela central
 	UserID     uint
 	User       User
+}
+
+// Máquinas Pixies
+type Pixies struct {
+	gorm.Model
+	Name     string `gorm:"not null"`
+	Floor    int
+	Products []Product `gorm:"many2many:pixies_products;"`
 }

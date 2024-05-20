@@ -33,6 +33,7 @@ func SetupPostgres() *gorm.DB {
 		&Report{},
 		&User{},
 		&Message{},
+		&Pixies{},
 	}
 
 	for _, model := range models {
