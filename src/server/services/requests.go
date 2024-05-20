@@ -5,6 +5,7 @@ import (
 	"g5/server/db"
 	"g5/server/types"
 	"log"
+	"math"
 
 	"github.com/gin-gonic/gin"
 )
@@ -87,4 +88,45 @@ func GetAllMessages(c *gin.Context, clients types.Clients, id string) {
 	}
 
 	c.JSON(200, messages)
+}
+func FindNearestPixies(c *gin.Context, clients types.Clients, productCode string, currentPixiesName string) {
+	var product db.Product
+	if err := clients.Pg.Where("code = ?", productCode).First(&product).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Produto não encontrado"})
+		return
+	}
+
+	var currentPixies db.Pixies
+	if err := clients.Pg.Where("name = ?", currentPixiesName).First(&currentPixies).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Pixies atual não encontrada"})
+		return
+	}
+
+	var pixies []db.Pixies
+	if err := clients.Pg.Joins("JOIN pixies_products ON pixies_products.pixies_id = pixies.id").
+		Where("pixies_products.product_id = ?", product.ID).Where("pixies.name != ?", currentPixiesName).Find(&pixies).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Erro ao buscar Pixies"})
+		return
+	}
+
+	if len(pixies) == 0 {
+		c.JSON(404, gin.H{"error": "Nenhuma Pixies encontrada com o produto solicitado"})
+		return
+	}
+
+	closestPixies := pixies[0]
+	minDistance := math.Abs(float64(closestPixies.Floor - currentPixies.Floor))
+
+	for _, p := range pixies[1:] {
+		distance := math.Abs(float64(p.Floor - currentPixies.Floor))
+		if distance < minDistance {
+			closestPixies = p
+			minDistance = distance
+		}
+	}
+
+	c.JSON(200, gin.H{
+		"message": fmt.Sprintf("A Pixies mais próxima com o medicamento é: %s", closestPixies.Name),
+		"pixies":  closestPixies.Name,
+	})
 }
