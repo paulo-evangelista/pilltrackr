@@ -28,3 +28,7 @@ type IncomingSuccess struct {
 type OutgoingMessage struct {
 	Message db.Message `json:"message"`
 }
+
+type OutgoingError struct {
+	Error string `json:"error"`
+}

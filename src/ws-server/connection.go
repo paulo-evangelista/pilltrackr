@@ -31,13 +31,12 @@ func handleConnections(pg *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	
 	fmt.Println("validating")
 	userId, isAdmin, err := auth.ValidateToken(pg, token)
-	
-	fmt.Println("userId ", userId, "| isAdmin ", isAdmin, "| err ", err)
 	if err != nil {
 		u.PrintConnectionResult(false)
 		http.Error(w, "Erro ao validar token, recusando...", http.StatusBadRequest)
 		return
 	}
+	fmt.Println("userId ", userId, "| isAdmin ", isAdmin, "| err ", err)
 	
 	if connectedUserIDs[userId] {
 		fmt.Println("user already connected")
@@ -45,6 +44,7 @@ func handleConnections(pg *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Usuário já conectado, recusando...", http.StatusBadRequest)
 		return
 	}
+
 	
 	fmt.Println("upgrading connection")
 	ws, err := upgrader.Upgrade(w, r, nil)
