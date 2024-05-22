@@ -38,10 +38,10 @@ class MyRequests extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My App'),
+        title: Text('Sirio-Libanes App'),
       ),
       body: Center(
-        child: ListTileCustom(title: 'Titulo Teste', subtitle: 'Descrição teste.'),
+        child: ListTileCustom(title: 'Requisição #1', subtitle: 'MS1371 - Dipirona 500mgR'),
         // child: ElevatedButton(
         //   onPressed: () => _showModal(context),
         //   child: Text('Show Modal'),
