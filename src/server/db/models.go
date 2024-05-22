@@ -22,13 +22,14 @@ type User struct {
 // Pedidos
 type Request struct {
 	gorm.Model
-	UserId      uint
-	Products    []Product `gorm:"many2many:request_products;"`
-	Description string
-	ReportId    uint
-	Messages    []Message
-	Closed      bool `gorm:"default:false"`
-	IsUrgent    bool `gorm:"default:false"`
+	UserId        uint
+	Products      []Product `gorm:"many2many:request_products;"`
+	Description   string
+	Reports       []Report `gorm:"many2many:request_reports;"`
+	Messages      []Message
+	Closed        bool `gorm:"default:false"`
+	IsUrgent      bool `gorm:"default:false"`
+	CurrentPixies string
 }
 
 // Produto (Equipamentos, insumos, remédios, etc.)
@@ -40,8 +41,8 @@ type Product struct {
 
 type Report struct {
 	gorm.Model
-	Requests []Request
-	Name     string `gorm:"not null"`
+	Name string `gorm:"not null"`
+	Code string `gorm:"unique;not null"`
 }
 
 // Mensagem

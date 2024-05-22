@@ -17,6 +17,7 @@ func CreateRequest(
 
 	isUrgent bool,
 	description string,
+	currentpixies string,
 ) {
 
 	if len(productCodes) == 0 && description == "" {
@@ -43,10 +44,11 @@ func CreateRequest(
 
 	// Criar um novo Request para o usuário
 	newRequest := db.Request{
-		UserId:      user.ID,
-		Description: description,
-		IsUrgent:    isUrgent,
-		Products:    products,
+		UserId:        user.ID,
+		Description:   description,
+		IsUrgent:      isUrgent,
+		Products:      products,
+		CurrentPixies: currentpixies,
 	}
 
 	// Salvar o novo Request no banco de dados

@@ -10,9 +10,10 @@ import (
 )
 
 type createRequestBody struct {
-	ProductCodes []string `json:"productCodes"`
-	Urgent       bool     `json:"urgent"`
-	Description  string   `json:"description"`
+	ProductCodes  []string `json:"productCodes"`
+	Urgent        bool     `json:"urgent"`
+	Description   string   `json:"description"`
+	CurrentPixies string   `json:"currentPixies"`
 }
 
 type findPixiesRequestBody struct {
@@ -44,6 +45,7 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 				req.ProductCodes,
 				req.Urgent || false,
 				req.Description,
+				req.CurrentPixies,
 			)
 
 		})
@@ -61,6 +63,7 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 		requests.GET("/:id/messages", func(c *gin.Context) {
 			services.GetAllMessages(c, clients, c.Param("id"))
 		})
+
 		requests.POST("/findPixies", func(c *gin.Context) {
 			var req findPixiesRequestBody
 
