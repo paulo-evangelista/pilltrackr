@@ -27,8 +27,9 @@ type Request struct {
 	Closed      bool `gorm:"default:false"`
 	IsUrgent    bool `gorm:"default:false"`
 	Messages    []Message
-	Report      []Report  `gorm:"many2many:report_products;"`
+	Reports     []Report  `gorm:"many2many:report_products;"`
 	Products    []Product `gorm:"many2many:request_products;"`
+	Assignees   []User    `gorm:"many2many:request_users;"`
 	PixiesId    uint
 	Pixies      Pixies
 }
