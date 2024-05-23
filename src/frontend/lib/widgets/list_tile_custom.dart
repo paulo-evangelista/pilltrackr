@@ -7,6 +7,7 @@ class ListTileCustom extends StatefulWidget {
   const ListTileCustom({super.key, required this.title, required this.subtitle});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ListTileCustomState createState() => _ListTileCustomState();
 }
 
@@ -27,17 +28,17 @@ class _ListTileCustomState extends State<ListTileCustom> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Requsição #1234'),
-          content: Text('A requisição foi encaminhada para farmacia central \nStatus: Aguardando Envio'),
+          title: const Text('Requsição #1234'),
+          content: const Text('A requisição foi encaminhada para a farmácia central \nStatus: Aguardando envio'),
           actions: <Widget>[
             TextButton(
-              child: Text('Fechar'),
+              child: const Text('Fechar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Chat'),
+              child: const Text('Chat'),
               onPressed: () {
                 Navigator.of(context).pop(); // Fechar o modal
                 //Adicionar tela de chat para levar o user apos clicar  
@@ -64,7 +65,7 @@ class _ListTileCustomState extends State<ListTileCustom> {
         children: <Widget>[
           Card(
             child: ListTile(
-              leading: Column(
+              leading: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.check_box_outlined)
@@ -72,7 +73,7 @@ class _ListTileCustomState extends State<ListTileCustom> {
               ),
               title: Text(_title),
               subtitle: Text(_subtitle),
-              trailing: Container(
+              trailing: const SizedBox(
                 height: double.infinity,
                 child: Icon(Icons.mark_chat_unread_outlined),
               ),
