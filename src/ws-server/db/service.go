@@ -39,3 +39,12 @@ func SaveMessage(userId uint, requestID uint, content string, sentByUser bool, p
 
 	return &message, nil
 }
+
+func CheckIfUserOwnsRequest(userId uint, requestId uint, pg *gorm.DB) (bool, error) {
+	var request Request
+	tx := pg.Where("user_id = ? AND id = ?", userId, requestId).First(&request)
+	if tx.Error != nil {
+		return false, tx.Error
+	}
+	return request.ID != 0, nil
+}
