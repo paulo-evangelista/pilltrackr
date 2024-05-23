@@ -14,9 +14,9 @@ func CreateRequest(
 	c *gin.Context,
 	clients types.Clients,
 	productCodes []string,
-
 	isUrgent bool,
 	description string,
+	pixiesID uint,
 ) {
 
 	if len(productCodes) == 0 && description == "" {
@@ -47,6 +47,7 @@ func CreateRequest(
 		Description: description,
 		IsUrgent:    isUrgent,
 		Products:    products,
+		PixiesId:    pixiesID,
 	}
 
 	// Salvar o novo Request no banco de dados
@@ -59,10 +60,26 @@ func CreateRequest(
 	c.JSON(201, gin.H{"message": "Pedido criado com sucesso", "request": newRequest.ID})
 }
 
+func GetUserRequests(c *gin.Context, clients types.Clients) {
+	var user db.User
+	if err := clients.Pg.Where("internal_id = ?", c.GetString("user_internal_id")).First(&user).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Usuário não encontrado (Isso não deveria acontecer)"})
+		return
+	}
+
+	var requests []db.Request
+	if err := clients.Pg.Preload("Products").Preload("Pixies").Where("user_id = ?", user.ID).Find(&requests).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Erro ao buscar pedidos do usuário"})
+		return
+	}
+
+	c.JSON(200, requests)
+}
+
 func GetRequest(c *gin.Context, clients types.Clients, id string) {
 
 	var request db.Request
-	if err := clients.Pg.Model(request).Preload("Products").Where("id = ?", id).First(&request).Error; err != nil {
+	if err := clients.Pg.Preload("Products").Preload("Pixies").Where("id = ?", id).First(&request).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Pedido não encontrado"})
 		return
 	}
@@ -72,7 +89,7 @@ func GetRequest(c *gin.Context, clients types.Clients, id string) {
 
 func GetAllRequests(c *gin.Context, clients types.Clients) {
 	var requests []db.Request
-	if err := clients.Pg.Preload("Products").Find(&requests).Error; err != nil {
+	if err := clients.Pg.Preload("Products").Preload("Pixies").Find(&requests).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Erro ao buscar pedidos"})
 		return
 	}

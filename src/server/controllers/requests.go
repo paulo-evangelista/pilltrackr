@@ -13,6 +13,7 @@ type createRequestBody struct {
 	ProductCodes []string `json:"productCodes"`
 	Urgent       bool     `json:"urgent"`
 	Description  string   `json:"description"`
+	PixiesID     uint     `json:"pixiesID"`
 }
 
 type findPixiesRequestBody struct {
@@ -44,8 +45,13 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 				req.ProductCodes,
 				req.Urgent || false,
 				req.Description,
+				req.PixiesID,
 			)
 
+		})
+
+		requests.GET("/user", func(c *gin.Context) {
+			services.GetUserRequests(c, clients)
 		})
 
 		requests.GET("/get/:id", mw.IsAdmin(), func(c *gin.Context) {
