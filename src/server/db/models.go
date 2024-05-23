@@ -23,12 +23,12 @@ type User struct {
 type Request struct {
 	gorm.Model
 	UserId      uint
-	Products    []Product `gorm:"many2many:request_products;"`
 	Description string
-	ReportId    []Report `gorm:"many2many:report_products;"`
-	Messages    []Message
 	Closed      bool `gorm:"default:false"`
 	IsUrgent    bool `gorm:"default:false"`
+	Messages    []Message
+	Report      []Report  `gorm:"many2many:report_products;"`
+	Products    []Product `gorm:"many2many:request_products;"`
 	PixiesId    uint
 	Pixies      Pixies
 }
