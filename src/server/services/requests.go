@@ -147,3 +147,21 @@ func FindNearestPixies(c *gin.Context, clients types.Clients, productCode string
 		"pixies":  closestPixies.Name,
 	})
 }
+
+func AddAssigneeToRequest(clients types.Clients, requestID uint, assigneeID uint) error {
+	var request db.Request
+	if err := clients.Pg.Where("id = ?", requestID).First(&request).Error; err != nil {
+		return err
+	}
+
+	var assignee db.User
+	if err := clients.Pg.Where("id = ?", assigneeID).First(&assignee).Error; err != nil {
+		return err
+	}
+
+	if err := clients.Pg.Model(&request).Association("Assignees").Append(&assignee); err != nil {
+		return err
+	}
+
+	return nil
+}

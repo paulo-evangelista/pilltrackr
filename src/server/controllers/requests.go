@@ -21,6 +21,11 @@ type findPixiesRequestBody struct {
 	CurrentPixies string `json:"currentPixies"`
 }
 
+type addAssigneeRequestBody struct {
+	RequestID uint `json:"requestID"`
+	UserID    uint `json:"userID"`
+}
+
 func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 
 	requests := r.Group("/request")
@@ -78,6 +83,22 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 			fmt.Println("Find Pixies request received:", req)
 
 			services.FindNearestPixies(c, clients, req.ProductCode, req.CurrentPixies)
+		})
+	
+		requests.POST("/addAssignee", mw.IsAdmin(), func(c *gin.Context) {
+			var req addAssigneeRequestBody
+
+			if err := c.BindJSON(&req); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+
+			if err := services.AddAssigneeToRequest(clients, req.RequestID, req.UserID); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+
+			c.JSON(200, gin.H{"message": "Assignee added successfully"})
 		})
 	}
 }
