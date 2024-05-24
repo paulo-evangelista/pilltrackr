@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/enfermagem/requests.dart';
 import 'package:frontend/views/enfermagem/new_request.dart';
+import 'package:frontend/views/enfermagem/choose_requests.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -34,6 +35,16 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Text('View Requests'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChooseRequests()),
+                );
+              },
+              child: Text('Choose Requests'),
             ),
           ],
         ),
