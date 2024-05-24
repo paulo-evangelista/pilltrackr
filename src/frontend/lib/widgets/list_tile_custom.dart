@@ -27,8 +27,8 @@ class _ListTileCustomState extends State<ListTileCustom> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Requsição #1234'),
-          content: Text('A requisição foi encaminhada para farmacia central \nStatus: Aguardando Envio'),
+          title: Text('Requisição #1234'),
+          content: Text('A requisição foi encaminhada para farmácia central \nStatus: Aguardando Envio'),
           actions: <Widget>[
             TextButton(
               child: Text('Fechar'),
@@ -40,11 +40,11 @@ class _ListTileCustomState extends State<ListTileCustom> {
               child: Text('Chat'),
               onPressed: () {
                 Navigator.of(context).pop(); // Fechar o modal
-                //Adicionar tela de chat para levar o user apos clicar  
-                //Navigator.push(
-                  //context
-                  //MaterialPageRoute(builder: (context) => SecondScreen()),
-                //);
+                // Adicionar tela de chat para levar o usuário após clicar
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => SecondScreen()),
+                // );
               },
             ),
           ],
@@ -55,33 +55,21 @@ class _ListTileCustomState extends State<ListTileCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Requisições Feitas'),
-        centerTitle: true,
-        ),
-      body: ListView(
+    return ListTile(
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.check_box_outlined)
-                ],
-              ),
-              title: Text(_title),
-              subtitle: Text(_subtitle),
-              trailing: Container(
-                height: double.infinity,
-                child: Icon(Icons.mark_chat_unread_outlined),
-              ),
-              onTap: () => _showModal(context),
-              isThreeLine: true,
-            ),
-          ),
+          Icon(Icons.check_box_outlined)
         ],
       ),
+      title: Text(_title),
+      subtitle: Text(_subtitle),
+      trailing: Container(
+        height: double.infinity,
+        child: Icon(Icons.mark_chat_unread_outlined),
+      ),
+      onTap: () => _showModal(context),
+      isThreeLine: true,
     );
   }
 }
