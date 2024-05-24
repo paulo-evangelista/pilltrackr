@@ -10,7 +10,7 @@ import (
 )
 
 type createReportBody struct {
-	Report      string `json:"report"`
+	Report      []int  `json:"report"`
 	Description string `json:"description"`
 	PixiesID    uint   `json:"pixiesID"`
 }
@@ -58,7 +58,7 @@ func InitReportRoutes(r *gin.Engine, clients types.Clients) {
 		// Retorna as mensagens do chat de um report
 		// Essa rota retorna as mensagens PASSADAS. O envio e recebiemnto de mensagens em tempo real é feito pelo WebSocket
 		reports.GET("/:id/messages", func(c *gin.Context) {
-			services.GetAllMessages(c, clients, c.Param("id"))
+			services.GetAllReportMessages(c, clients, c.Param("id"))
 		})
 	}
 }
