@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"g5/server/db"
-	"g5/server/types"
-	"g5/server/middlewares"
 	"g5/server/controllers"
+	"g5/server/db"
+	"g5/server/middlewares"
+	"g5/server/types"
 
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -15,11 +15,13 @@ func main() {
 
 	clients := types.Clients{
 		Redis: db.SetupRedis(),
-		Pg: db.SetupPostgres(),
+		Pg:    db.SetupPostgres(),
 	}
 
-	r.Use(middlewares.AuthUser());
+	r.Use(middlewares.AuthUser())
+	r.Use(middlewares.AssertUserExistance(clients.Pg))
 
+	controllers.InitReportRoutes(r, clients)
 	controllers.InitRequestRoutes(r, clients)
 	controllers.InitClientRoutes(r, clients)
 	controllers.InitAdminRoutes(r, clients)

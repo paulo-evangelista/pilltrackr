@@ -23,15 +23,11 @@ type User struct {
 type Request struct {
 	gorm.Model
 	UserId      uint
+	Products    []Product `gorm:"many2many:request_products;"`
 	Description string
+	Messages    []Message
 	Closed      bool `gorm:"default:false"`
 	IsUrgent    bool `gorm:"default:false"`
-	Messages    []Message
-	Reports     []Report  `gorm:"many2many:request_reports;"`
-	Products    []Product `gorm:"many2many:request_products;"`
-	Assignees   []User    `gorm:"many2many:request_users;"`
-	PixiesId    uint
-	Pixies      Pixies
 }
 
 // Produto (Equipamentos, insumos, remédios, etc.)
@@ -41,26 +37,14 @@ type Product struct {
 	Code string `gorm:"unique;not null"` // Código do item (código de barras?)
 }
 
-type Report struct {
-	gorm.Model
-	Name string `gorm:"not null"`
-}
-
 // Mensagem
 type Message struct {
 	gorm.Model
 	RequestID  uint
-	Request    Request
+	Request	Request
 	Content    string
 	SentByUser bool // true se a mensagem foi enviada pelo usuário, false se foi enviada pela central
 	UserID     uint
 	User       User
 }
 
-// Máquinas Pixies
-type Pixies struct {
-	gorm.Model
-	Name     string `gorm:"not null"`
-	Floor    int
-	Products []Product `gorm:"many2many:pixies_products;"`
-}
