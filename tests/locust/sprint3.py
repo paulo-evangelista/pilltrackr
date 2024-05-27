@@ -5,8 +5,10 @@ class WebsiteUser(HttpUser):
 
     @task
     def criar_pedido(self):
-        self.client.post("/requests/create", json={"name": "durateston",  "description": "paciente querendo ficar grandão" })
+        headers = {"Authorization": "123"}
+        self.client.post("/requests/create", json={"name": "durateston", "description": "paciente querendo ficar grandão"}, headers=headers)
 
     @task
     def pegar_pedido(self):
-        self.client.get(f"/requests/user")
+        headers = {"Authorization": "123"}
+        self.client.get("/requests/user", headers=headers)
