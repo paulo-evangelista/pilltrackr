@@ -6,9 +6,9 @@ class WebsiteUser(HttpUser):
     @task
     def criar_pedido(self):
         headers = {"Authorization": "123"}
-        self.client.post("/requests/create", json={"name": "durateston", "description": "paciente querendo ficar grandão"}, headers=headers)
+        self.client.post("/request/create", json={"productCode": ["003"], "urgent": False, "description": "Está em falta", "pixiesID":2 }, headers=headers)
 
     @task
     def pegar_pedido(self):
         headers = {"Authorization": "123"}
-        self.client.get("/requests/user", headers=headers)
+        self.client.get("/request/user", headers=headers)
