@@ -29,10 +29,8 @@ class ListTileCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.check_box_outlined),
       title: Text(request.title),
       subtitle: Text(request.status),
-      trailing: const Icon(Icons.mark_chat_unread_outlined),
       onTap: () => _showModal(context),
       isThreeLine: true,
     );
