@@ -25,5 +25,22 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          ls
+            cd /path/to/your/project
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
+            sleep 10  # Aguardar alguns segundos para garantir que os serviços estejam iniciados
+            # Verificar o status dos containers
+            STATUS=$(docker-compose ps | grep -E "Exit|Restarting" || true)
+            if [ -n "$STATUS" ]; then
+              echo "One or more services are not running correctly"
+              exit 1
+            fi
+            # Verificar logs dos containers para mensagens de erro (opcional)
+            LOGS=$(docker-compose logs 2>&1 | grep -i "error" || true)
+            if [ -n "$LOGS" ]; then
+              echo "Error found in container logs"
+              echo "$LOGS"
+              exit 1
+            fi
           EOF
