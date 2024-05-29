@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'success_requests.dart'; // Importa a nova página
+import 'success_requests.dart'; 
+import '../../services/request_service.dart';
 
 class NewRequest extends StatefulWidget {
   @override
@@ -22,33 +23,37 @@ class _NewRequestState extends State<NewRequest> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.43.120:8080/request/create'); 
+    final RequestService _apiService = RequestService();
+
+    final url = Uri.parse('http://10.254.19.37:8080/request/create'); 
     final token = 'token';
     final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
+      // Headers padrão ja setados no serviço de request
+      '':'',
       };
-    final body = json.encode({
+    final body = {
       "productCodes": ["002"],
       "pixiesID": 2,
-      "urgent": false,
-      "description": "Está sem nada"
-    });
+      "urgent": _isImmediate,
+      "description": _descriptionController.text,
+    };
 
     try {
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await _apiService.sendRequest(
+        url: url,
+        token: token,
+        headers: headers,
+        body: body,
+      );
+
       if (response.statusCode == 201) {
         // Simulação de ID de requisição e localização do Pyxis para o exemplo
         String requestId = '007610e1-ab06-4f28-ac4b-064b3febad7a';
         String pyxisLocation = 'MS1347 - 14º Andar';
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => SuccessRequest(
-              requestId: requestId,
-              pyxisLocation: pyxisLocation,
-            ),
-          ),
+          '/successRequest',
+          arguments: {'requestId': requestId, 'pyxisLocation': pyxisLocation},
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

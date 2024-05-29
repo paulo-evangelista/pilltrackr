@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/enfermagem/choose_requests.dart'; // Importa ChooseRequests
+import 'package:frontend/views/enfermagem/choose_requests.dart';
+import 'package:frontend/views/enfermagem/new_request.dart'; 
+import 'package:frontend/views/enfermagem/other_requests.dart';
+import 'package:frontend/views/enfermagem/success_requests.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -13,7 +17,40 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChooseRequests(), // Define ChooseRequests como a página inicial
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/successRequest':
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (context) {
+                return SuccessRequest(
+                  requestId: args['requestId'],
+                  pyxisLocation: args['pyxisLocation'],
+                );
+              },
+            );
+    // Exemplo de outra rota sendo passada com parametros
+    //      
+          // case '/detail':
+          //   final args = settings.arguments as Map<String, dynamic>;
+          //   return MaterialPageRoute(
+          //     builder: (context) {
+          //       return DetailScreen(
+          //         itemId: args['itemId'],
+          //         itemName: args['itemName'],
+          //       );
+          //     },
+          //   );
+          default:
+            return null; // Return null to use default `onUnknownRoute`
+        }
+      },
+      routes: {
+        '/':(context) => ChooseRequests(),
+        '/otherRequest': (context) => OtherRequests(),
+        '/newRequests': (context) => NewRequest(),
+      },
     );
   }
 }
