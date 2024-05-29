@@ -1,17 +1,8 @@
----
-title: Aplicativo Mobile
-sidebar_position: 2
----
-# Aplicativo Flutter 
-
-A aplicação Mobile é desenvolvida em Flutter com o uso da linguagem Dart. Com o framework Flutter é possivel desenvolver aplicações multiplataformas com a mesma base de código
-Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usuario da Enfermaria e outro para o da Farmacia Central
+A aplicação Mobile é desenvolvida em Flutter com o uso da linguagem Dart. Com o framework Flutter é possível desenvolver aplicações multiplataformas com a mesma base de código. Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usuário da Enfermaria e outro para o da Farmácia Central.
 
 ## Views
 
 ### Enfermeiro
-
-![Telas do Enfermeiro](/docs/static/img/enf-screens.png)
 
 1. **Tela de Escolha:** A tela inicial onde o enfermeiro escolhe o motivo da requisição.
 
@@ -22,18 +13,16 @@ Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usua
 4. **Tela de Feedback de Sucesso:** Feedback após a criação de uma nova requisição com sucesso.
 
 5. **Tela de Requisições Feitas:** Lista de requisições feitas pelo enfermeiro.
-
-### Farmacia Central
-
-![Telas da Farmacia Central](/docs/static/img/fc-screens.png)
+   
+### Farmácia Central
 
 1. **Tela de Requisições Pendentes:** Lista de requisições pendentes para serem processadas pela farmácia central.
 
 2. **Tela de Detalhe da Requisição Pendente:** Detalhamento de uma requisição específica.
    
 3. **Tela de Requisições Enviadas:** Lista de requisições enviadas pela farmácia central.
-
-## FLuxo de Telas
+   
+## Fluxo de Telas
 
 ### Enfermeiro
 
@@ -69,16 +58,3 @@ Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usua
    - Após enviar uma requisição, a farmácia central pode visualizar a lista de requisições enviadas e editar ou visualizar detalhes de cada uma.
 
 Este fluxo de telas garante que tanto os enfermeiros quanto a farmácia central possam gerenciar eficientemente as requisições de medicamentos e outros problemas recorrentes.
-
-## Integração
-
-A tela de criação de requisições do enfermeiro já está integrada com nosso backend, enviando e armazenando as requisições feitas pela nossa aplicação
-
-### Requisição da Aplicação
-![Flutter Request](/docs/static/img/flutter-request-feedback.jpeg)
-
-### Feedback do Backend
-![Backend Feedback](/docs/static/img/backend-reques-feedback.png)
-
-### Get para o DB através do Insomnia
-![Insomnia Request](/docs/static/img/insomnia-request-feedback.png)
