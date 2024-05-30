@@ -1,0 +1,72 @@
+services:
+
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: prod.Dockerfile
+    volumes:
+      - ./server:/app
+    ports:
+    - 8080:8080
+    environment:
+      DB_HOST: db
+      REDIS_HOST: redis
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis: 
+        condition: service_healthy
+
+  ws-server:
+    container_name: ws-server
+    build: 
+      context: ./ws-server
+      dockerfile: prod.Dockerfile
+    volumes:
+      - ./ws-server:/app
+    ports:
+    - 8081:8081
+    environment:
+      DB_HOST: db
+      REDIS_HOST: redis
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    
+  db:
+    container_name: postgres_db
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    expose: 
+      - 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    expose:
+      - 6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    restart: always
+
+volumes:
+  postgres_data:
