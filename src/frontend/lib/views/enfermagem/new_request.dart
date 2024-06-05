@@ -12,6 +12,7 @@ class NewRequest extends StatefulWidget {
 class _NewRequestState extends State<NewRequest> {
   final List<String> _medicines = ['Aspirina', 'Paracetamol', 'Ibuprofeno'];
   String? _selectedMedicine;
+  late String _productCode;
   bool _isImmediate = false;
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -25,14 +26,15 @@ class _NewRequestState extends State<NewRequest> {
 
     final RequestService _apiService = RequestService();
 
-    final url = Uri.parse('http://10.254.19.37:8080/request/create'); 
+    final url = Uri.parse('http://10.128.0.70:8080/request/create'); 
     final token = 'token';
     final headers = {
       // Headers padrão ja setados no serviço de request
       '':'',
-      };
+    };
     final body = {
-      "productCodes": ["002"],
+      "productCodes": ["001"],
+      // "productCodes": ["{$_productCode}"],
       "pixiesID": 2,
       "urgent": _isImmediate,
       "description": _descriptionController.text,
@@ -99,6 +101,7 @@ class _NewRequestState extends State<NewRequest> {
               onChanged: (newValue) {
                 setState(() {
                   _selectedMedicine = newValue;
+                  _productCode = '00{$_selectedMedicine}';
                 });
               },
               items: _medicines.map((medicine) {
