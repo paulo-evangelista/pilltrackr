@@ -5,8 +5,8 @@ import (
 	"g5/server/db"
 	"g5/server/middlewares"
 	"g5/server/types"
-
 	"github.com/gin-gonic/gin"
+	"github.com/penglongli/gin-metrics/ginmetrics"
 )
 
 func main() {
@@ -17,6 +17,11 @@ func main() {
 		Redis: db.SetupRedis(),
 		Pg:    db.SetupPostgres(),
 	}
+
+	m := ginmetrics.GetMonitor()
+	m.SetMetricPath("/metrics")
+	m.Use(r)
+	r.Use(m.AddMetric())
 
 	r.Use(middlewares.AuthUser())
 	r.Use(middlewares.AssertUserExistance(clients.Pg))
