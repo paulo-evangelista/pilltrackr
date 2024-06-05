@@ -21,7 +21,6 @@ func main() {
 	m := ginmetrics.GetMonitor()
 	m.SetMetricPath("/metrics")
 	m.Use(r)
-	r.Use(m.AddMetric())
 
 	r.Use(middlewares.AuthUser())
 	r.Use(middlewares.AssertUserExistance(clients.Pg))
