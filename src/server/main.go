@@ -19,6 +19,12 @@ func main() {
 	}
 
 	m := ginmetrics.GetMonitor()
+	m.AddMetric(&ginmetrics.Metric{
+		Type: 	ginmetrics.Counter,
+		Name: "test_test_test",
+		Description: "testing forever!",
+		Labels:      []string{"label1"},
+	})
 	m.SetMetricPath("/metrics")
 	m.Use(r)
 

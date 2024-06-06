@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
+	"github.com/penglongli/gin-metrics/ginmetrics"
 )
 
 // Verificar o token de autenticação do usuário contra a API de autenticação
@@ -14,6 +15,7 @@ func AuthUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
+			ginmetrics.GetMonitor().GetMetric("test_test_test").Inc([]string{"label1"});
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token de autenticação não fornecido"})
 			c.Abort()
 			return
