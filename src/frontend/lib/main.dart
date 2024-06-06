@@ -3,6 +3,8 @@ import 'package:frontend/views/enfermagem/choose_requests.dart';
 import 'package:frontend/views/enfermagem/new_request.dart'; 
 import 'package:frontend/views/enfermagem/other_requests.dart';
 import 'package:frontend/views/enfermagem/success_requests.dart';
+// Aplicar dotenv para host e port
+// import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
 
 
 void main() {
