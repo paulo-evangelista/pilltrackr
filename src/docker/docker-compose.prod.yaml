@@ -3,10 +3,10 @@ services:
   server:
     container_name: server
     build:
-      context: ./server
+      context: ../server
       dockerfile: prod.Dockerfile
     volumes:
-      - ./server:/app
+      - ../server:/app
     ports:
     - 8080:8080
     environment:
@@ -22,10 +22,10 @@ services:
   ws-server:
     container_name: ws-server
     build: 
-      context: ./ws-server
+      context: ../ws-server
       dockerfile: prod.Dockerfile
     volumes:
-      - ./ws-server:/app
+      - ../ws-server:/app
     ports:
     - 8081:8081
     environment:
@@ -80,7 +80,7 @@ services:
     restart: always
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana_settings.ini:/etc/grafana/grafana_settings.ini
+      - ./grafana_settings.prod.ini:/etc/grafana/grafana_settings.ini
 
   prometheus:
     container_name: prometheus
