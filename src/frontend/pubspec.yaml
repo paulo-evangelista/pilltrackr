@@ -15,10 +15,7 @@ dependencies:
   http: ^1.2.1
   flutter_dotenv: ^5.1.0
 
-
-
   cupertino_icons: ^1.0.6
-  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:

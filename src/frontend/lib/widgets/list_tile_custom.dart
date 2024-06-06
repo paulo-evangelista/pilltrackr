@@ -7,14 +7,19 @@ class ListTileCustom extends StatefulWidget {
   final String title;
   final String subtitle;
 
-  const ListTileCustom({super.key, required this.title, required this.subtitle});
+  const ListTileCustom({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.request,
+  });
 
   @override
   _ListTileCustomState createState() => _ListTileCustomState();
 }
 
 class _ListTileCustomState extends State<ListTileCustom> {
-  
+  late Request _request;
   late String _title;
   late String _subtitle;
 
@@ -30,8 +35,8 @@ class _ListTileCustomState extends State<ListTileCustom> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Requisição ${request.id}'),
-          content: Text('A requisição foi encaminhada para a farmácia central \nStatus: ${request.status}'),
+          title: Text('Requisição ${_request.id}'),
+          content: Text('A requisição foi encaminhada para a farmácia central \nStatus: ${_request.status}'),
           actions: <Widget>[
             TextButton(
               child: const Text('Fechar'),
@@ -59,16 +64,16 @@ class _ListTileCustomState extends State<ListTileCustom> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      //title: Text(request.title),
-      //subtitle: Text(request.status),
+      title: Text(_request.title),
+      subtitle: Text(_request.status),
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.check_box_outlined)
         ],
       ),
-      title: Text(_title),
-      subtitle: Text(_subtitle),
+      // title: Text(_title),
+      // subtitle: Text(_subtitle),
       trailing: Container(
         height: double.infinity,
         child: Icon(Icons.mark_chat_unread_outlined),

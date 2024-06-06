@@ -9,9 +9,11 @@ class Request {
   
   Request({
    required this.id,
-   required this.medicamento,
-   required this.imediato,
-   required this.descricao,
+   required this.title,
+   this.medicamento='',
+   this.imediato=false,
+   this.status='',
+   this.descricao='',
   });
   
   //Rever integração da request-fc para compreender o uso do codigo abaixo

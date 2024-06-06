@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/':(context) => ChooseRequests(),
         '/otherRequest': (context) => OtherRequests(),
         '/newRequests': (context) => NewRequest(),
+        '/myRequests': (context) => MyRequests(),
       },
     );
   }

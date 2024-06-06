@@ -84,6 +84,7 @@ class _MyRequestsState extends State<MyRequests> {
                         color: Colors.white,
                       ),
                       child: ListTileCustom(
+                        request: request,
                         title: 'Requisição #${request['ID']}',
                         subtitle: productNames,
                         // subtitle: requestDescription,
