@@ -30,13 +30,13 @@ jobs:
             git checkout dev
             git pull
             echo "Stopping and removing old containers"
-            docker compose down
+            docker compose -f docker-compose.prod.yaml down
             echo "Building and starting containers"
             docker compose -f docker-compose.prod.yaml up -d --build
 
             COMPOSE_UP_EXIT_CODE=$?
             if [ $COMPOSE_UP_EXIT_CODE -ne 0 ]; then
-                echo "docker-compose up failed"
+                echo "docker compose up failed"
                 exit 1
             fi
 
