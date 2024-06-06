@@ -26,18 +26,16 @@ class _NewRequestState extends State<NewRequest> {
 
     final RequestService _apiService = RequestService();
 
-    final url = Uri.parse('http://10.254.19.138:8080/request/create'); 
-    final token = 'token';
+    final url = Uri.parse('https://pilltrackr.cathena.io/api/request/create'); 
+    final token = 'admin';
     final headers = {
-      // Headers padrão ja setados no serviço de request
       '':'',
     };
     final body = {
       "productCodes": ["001"],
-      // "productCodes": ["{$_productCode}"],
       "pixiesID": 2,
-      "urgent": _isImmediate,
-      "description": _descriptionController.text,
+      "urgent": false,
+      "description": "teste"
     };
 
     try {
