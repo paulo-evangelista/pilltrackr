@@ -26,7 +26,7 @@ jobs:
           
         run: |
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-            cd ~/2024-1B-T02-EC10-G05/src
+            cd ~/2024-1B-T02-EC10-G05/src/docker
             git checkout dev
             git pull
             echo "Stopping and removing old containers"
