@@ -75,7 +75,7 @@ class _MyRequestsState extends State<MyRequests> {
                   key: ValueKey(request.id),
                   child: ListTile(
                     // ignore: prefer_const_constructors
-                    title: ListTileCustom(request: request),
+                    title: ListTileCustom(request: request, title: '', subtitle: '',),
                   ),
                 );
               }).toList(),

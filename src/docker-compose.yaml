@@ -73,7 +73,20 @@ services:
     restart: always
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana_settings.ini:/etc/grafana/grafana_settings.ini
+      - ./docker/grafana_settings.ini:/etc/grafana/grafana_settings.ini
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    restart: always
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
 
 volumes:
   postgres_data:
