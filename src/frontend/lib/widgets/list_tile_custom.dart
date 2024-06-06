@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/request.dart';
 
 class ListTileCustom extends StatefulWidget {
+  final Request request;
+  
   final String title;
   final String subtitle;
 
@@ -27,11 +30,11 @@ class _ListTileCustomState extends State<ListTileCustom> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Requisição #1234'),
-          content: Text('A requisição foi encaminhada para farmácia central \nStatus: Aguardando Envio'),
+          title: Text('Requisição ${request.id}'),
+          content: Text('A requisição foi encaminhada para a farmácia central \nStatus: ${request.status}'),
           actions: <Widget>[
             TextButton(
-              child: Text('Fechar'),
+              child: const Text('Fechar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -56,6 +59,8 @@ class _ListTileCustomState extends State<ListTileCustom> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      //title: Text(request.title),
+      //subtitle: Text(request.status),
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

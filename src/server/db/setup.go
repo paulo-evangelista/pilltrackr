@@ -45,7 +45,7 @@ func SetupPostgres() *gorm.DB {
 	}
 
 	fmt.Println(" -> Inicialização Postgres e Redis concluída")
-
+	
 	return dbClient
 }
 
