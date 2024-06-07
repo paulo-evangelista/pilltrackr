@@ -1,16 +1,13 @@
-import 'dart:async';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-class AuthInterceptor implements http.BaseClient {
+class AuthInterceptor extends Interceptor {
   final String username;
-  final http.Client _inner = http.Client();
 
   AuthInterceptor(this.username);
 
   @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) {
-    // Adiciona o cabeçalho de autorização em todas as requisições
-    request.headers['Authorization'] = '$username';
-    return _inner.send(request);
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    options.headers['Authorization'] = '$username';
+    super.onRequest(options, handler);
   }
 }
