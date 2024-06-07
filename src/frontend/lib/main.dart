@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:frontend/views/fc/requests.dart';
 
+
 import 'package:frontend/views/enfermagem/choose_requests.dart';
 import 'package:frontend/views/enfermagem/new_request.dart'; 
 import 'package:frontend/views/enfermagem/other_requests.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pilltrackr',
+      title: 'Chat App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromRGBO(40, 57, 104, 1)),
         useMaterial3: true,

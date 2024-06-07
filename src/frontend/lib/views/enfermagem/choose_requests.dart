@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/enfermagem/new_request.dart'; 
+import 'package:frontend/views/enfermagem/new_request.dart';
 import 'package:frontend/views/enfermagem/other_requests.dart';
 
 class ChooseRequests extends StatefulWidget {
@@ -13,7 +13,7 @@ class _ChooseRequestsState extends State<ChooseRequests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECF0F3), 
+      backgroundColor: Color(0xFFECF0F3),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -21,28 +21,28 @@ class _ChooseRequestsState extends State<ChooseRequests> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Olá, \nEnfermeiro.\nQual o motivo \nda sua \nrequisição?',
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+        child: Center( // Centraliza todo o conteúdo
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente
+            crossAxisAlignment: CrossAxisAlignment.center, // Centraliza horizontalmente
+            children: [
+              Text(
+                'Olá, enfermeiro.\nQual o motivo da sua requisição?',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center, // Alinha o texto ao centro
               ),
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.only(left: 22.5), // Adiciona margem à esquerda
-              child: Container(
+              SizedBox(height: 30),
+              Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 1.5), // Adiciona a moldura
-                  borderRadius: BorderRadius.circular(25.0), // Bordas mais circulares
+                  border: Border.all(color: Colors.black, width: 1.5),
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25.0), // Bordas mais circulares
+                  borderRadius: BorderRadius.circular(25.0),
                   child: ToggleButtons(
                     isSelected: [selectedOption == 'Medicamentos', selectedOption == 'Outros'],
                     onPressed: (int index) {
@@ -63,10 +63,8 @@ class _ChooseRequestsState extends State<ChooseRequests> {
                   ),
                 ),
               ),
-            ),
-            Spacer(), // Adicione um espaço flexível
-            Center(
-              child: ElevatedButton(
+              SizedBox(height: 150), // Espaço entre os botões e o botão "Entrar"
+              ElevatedButton(
                 onPressed: () {
                   if (selectedOption == 'Outros') {
                     Navigator.push(
@@ -88,9 +86,8 @@ class _ChooseRequestsState extends State<ChooseRequests> {
                 ),
                 child: Text('Entrar'),
               ),
-            ),
-            SizedBox(height: 150),
-          ],
+            ],
+          ),
         ),
       ),
     );
