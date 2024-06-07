@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+
 
 func SetupPostgres() *gorm.DB {
 
@@ -26,6 +27,11 @@ func SetupPostgres() *gorm.DB {
 		log.Fatal("Could not open database connection")
 		os.Exit(1)
 	}
+
+
+
+
+
 
 	models := []interface{}{
 		&Request{},
@@ -49,7 +55,7 @@ func SetupPostgres() *gorm.DB {
 	return dbClient
 }
 
-func SetupRedis() *redis.Client {
+func SetupRedis( ) *redis.Client {
 	redisHost := os.Getenv("REDIS_HOST")
 	if redisHost == "" {
 		log.Fatal("REDIS_HOST environment variable is not set.")

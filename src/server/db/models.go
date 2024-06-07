@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/penglongli/gin-metrics/ginmetrics"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +29,7 @@ type Request struct {
 	IsUrgent    bool `gorm:"default:false"`
 	Messages    []Message
 	// Reports     []Report  `gorm:"many2many:request_reports;"`
-	Products    []Product `gorm:"many2many:request_products;"`
+	Products []Product `gorm:"many2many:request_products;"`
 	// PixiesId    uint
 	// Pixies      Pixies
 }
@@ -63,3 +64,11 @@ type Message struct {
 // 	Floor    int
 // 	Products []Product `gorm:"many2many:pixies_products;"`
 // }
+
+func (u *User) AfterSave(tx *gorm.DB) {
+	ginmetrics.GetMonitor().GetMetric("db_users_operations_total").Inc([]string{"label1"})
+}
+
+func (r *Request) AfterSave(tx *gorm.DB) {
+	ginmetrics.GetMonitor().GetMetric("db_requests_operations_total").Inc([]string{"label1"})
+}
