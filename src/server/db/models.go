@@ -65,10 +65,12 @@ type Message struct {
 // 	Products []Product `gorm:"many2many:pixies_products;"`
 // }
 
-func (u *User) AfterSave(tx *gorm.DB) {
+func (u *User) AfterSave(tx *gorm.DB) (err error) {
 	ginmetrics.GetMonitor().GetMetric("db_users_operations_total").Inc([]string{"label1"})
+	return
 }
 
-func (r *Request) AfterSave(tx *gorm.DB) {
+func (r *Request) AfterSave(tx *gorm.DB) (err error){
 	ginmetrics.GetMonitor().GetMetric("db_requests_operations_total").Inc([]string{"label1"})
+	return
 }
