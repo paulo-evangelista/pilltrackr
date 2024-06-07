@@ -1,26 +1,39 @@
+import 'package:flutter/foundation.dart';
+
 class Request {
   final String id;
-  final String title;
+  final String productCode;
+  final bool isUrgent;
+  final String description;
   final String status;
+  
 
-  final String medicamento;
-  final bool imediato;
-  final String descricao;
-  
   Request({
-   required this.id,
-   required this.title,
-   this.medicamento='',
-   this.imediato=false,
-   this.status='',
-   this.descricao='',
+    required this.id,
+    required this.productCode,
+    required this.isUrgent,
+    required this.description,
+    required this.status,
   });
-  
-  //Rever integração da request-fc para compreender o uso do codigo abaixo
+
+  // Método para converter um JSON em uma instância de Request
+  factory Request.fromJson(Map<String, dynamic> json) {
+    return Request(
+      id: json['id'] as String,
+      productCode: json['productCode'] as String,
+      isUrgent: json['isUrgent'] as bool,
+      description: json['description'] as String,
+      status: json['status'] as String,
+    );
+  }
+
+  // Método para converter uma instância de Request em um JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
+      'productCode': productCode,
+      'isUrgent': isUrgent,
+      'description': description,
       'status': status,
     };
   }

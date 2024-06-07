@@ -24,7 +24,7 @@ class _ChooseRequestsState extends State<ChooseRequests> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Olá, \nEnfermeiro.\nQual o motivo \nda sua \nrequisição?',
               style: TextStyle(
                 fontSize: 36,

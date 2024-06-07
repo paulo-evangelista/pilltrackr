@@ -26,7 +26,7 @@ class _NewRequestState extends State<NewRequest> {
 
     final RequestService _apiService = RequestService();
 
-    final url = Uri.parse('http://10.254.19.138:8080/request/create'); 
+    final url = Uri.parse('http://10.128.0.70:8080/request/create'); 
     final token = 'token';
     final headers = {
       // Headers padrão ja setados no serviço de request
@@ -83,107 +83,109 @@ class _NewRequestState extends State<NewRequest> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Medicamento Faltante:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              value: _selectedMedicine,
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedMedicine = newValue;
-                  _productCode = '00{$_selectedMedicine}';
-                });
-              },
-              items: _medicines.map((medicine) {
-                return DropdownMenuItem(
-                  value: medicine,
-                  child: Text(medicine),
-                );
-              }).toList(),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  borderSide: BorderSide(color: Colors.black, width: 3.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Medicamento Faltante:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                filled: true,
-                fillColor: Colors.white,
-                suffixIcon: Icon(Icons.arrow_drop_down),
               ),
-            ),
-            SizedBox(height: 20),
-            TextButton.icon(
-              onPressed: () {
-                // Lógica para adicionar um novo medicamento
-              },
-              icon: Icon(Icons.add),
-              label: Text('Adicionar medicamento'),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Precisa imediatamente?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: _selectedMedicine,
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedMedicine = newValue;
+                    _productCode = '00{$_selectedMedicine}';
+                  });
+                },
+                items: _medicines.map((medicine) {
+                  return DropdownMenuItem(
+                    value: medicine,
+                    child: Text(medicine),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    borderSide: BorderSide(color: Colors.black, width: 3.0),
                   ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  suffixIcon: Icon(Icons.arrow_drop_down),
                 ),
-                Switch(
-                  value: _isImmediate,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _isImmediate = newValue;
-                    });
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 40),
-            Text(
-              'Descrição Adicional:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _descriptionController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide(color: Colors.black, width: 3.0),
-                ),
-                filled: true,
-                fillColor: Colors.white,
+              SizedBox(height: 20),
+              TextButton.icon(
+                onPressed: () {
+                  // Lógica para adicionar um novo medicamento
+                },
+                icon: Icon(Icons.add),
+                label: Text('Adicionar medicamento'),
               ),
-            ),
-            SizedBox(height: 30),
-            Center(
-              child: ElevatedButton(
-                onPressed: _sendRequest,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(horizontal: 55, vertical: 20),
-                  textStyle: TextStyle(fontSize: 15),
-                  foregroundColor: Colors.white,
-                ),
-                child: Text('Enviar'),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Precisa imediatamente?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Switch(
+                    value: _isImmediate,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _isImmediate = newValue;
+                      });
+                    },
+                  ),
+                ],
               ),
-            ),
-          ],
+              SizedBox(height: 40),
+              Text(
+                'Descrição Adicional:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: _descriptionController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(color: Colors.black, width: 3.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+              SizedBox(height: 30),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _sendRequest,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 55, vertical: 20),
+                    textStyle: TextStyle(fontSize: 15),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text('Enviar'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

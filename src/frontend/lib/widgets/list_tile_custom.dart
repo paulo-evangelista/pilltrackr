@@ -64,7 +64,7 @@ class _ListTileCustomState extends State<ListTileCustom> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(_request.title),
+      title: Text(_request.productCode),
       subtitle: Text(_request.status),
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,

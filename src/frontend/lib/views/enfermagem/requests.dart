@@ -16,7 +16,7 @@ class _MyRequestsState extends State<MyRequests> {
 
   final RequestService _apiService = RequestService();
 
-  final url = Uri.parse('http://10.254.19.138:8080/request/user');
+  final url = Uri.parse('http://10.128.0.70:8080/request/user');
   final token = 'token';
   final headers = {
     // Headers padrão ja setados no serviço de request
@@ -60,6 +60,7 @@ class _MyRequestsState extends State<MyRequests> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
+              print(snapshot.error.toString());
               return Center(child: Text('Erro ao carregar requisições'));
             } else if (snapshot.hasData) {
               if (snapshot.data!.statusCode == 200) {
