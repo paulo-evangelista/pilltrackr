@@ -10,7 +10,7 @@ Este documento fornece uma visão detalhada do protótipo de um aplicativo desti
 ## Estrutura das Telas do Protótipo
 
 ### Tela 1: Motivo da Requisição
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela1.png)
+![img](/img/Tela1.png)
 - **Descrição:** O usuário seleciona o motivo da requisição entre "Medicamentos" e "Outros".
 - **Componentes:**
   - Texto de boas-vindas: "Olá, Enfermeiro. Qual o motivo da sua requisição?"
@@ -18,7 +18,7 @@ Este documento fornece uma visão detalhada do protótipo de um aplicativo desti
   - Botão "Entrar".
 
 ### Tela 2: Requisição de Medicamentos
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela2.png)
+![img](/img/Tela2.png)
 - **Descrição:** Permite ao usuário adicionar medicamentos à lista de requisições.
 - **Componentes:**
   - Campo de seleção: "Medicamento Faltante".
@@ -28,7 +28,7 @@ Este documento fornece uma visão detalhada do protótipo de um aplicativo desti
   - Botão "Enviar".
 
 ### Tela 3: Requisição de Outros Problemas
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela3.png)
+![img](/img/Tela3.png)
 - **Descrição:** Permite ao usuário relatar problemas recorrentes.
 - **Componentes:**
   - Campo de seleção: "Problema Recorrente".
@@ -36,20 +36,20 @@ Este documento fornece uma visão detalhada do protótipo de um aplicativo desti
   - Botão "Enviar".
 
 ### Tela 4: Confirmação de Requisição
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela4.png)
+![img](/img/Tela4.png)
 - **Descrição:** Confirmação de que a requisição foi feita com sucesso, incluindo detalhes sobre o ponto de retirada dos medicamentos.
 - **Componentes:**
   - Mensagem de confirmação com código da requisição.
   - Detalhes sobre o local mais próximo com os medicamentos: "Pyxis mais próximo com os medicamentos: MS1347 - 14º Andar".
 
 ### Tela 5: Requisições Feitas
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela5.png)
+![img](/img/Tela5.png)
 - **Descrição:** Exibe uma lista de requisições feitas.
 - **Componentes:**
   - Lista de requisições com identificador e nome do medicamento.
 
 ### Tela 6: Lista de Requisições
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela6.png)
+![img](/img/Tela6.png)
 - **Descrição:** Exibe as requisições pendentes e enviadas.
 - **Componentes:**
   - Abas de navegação: "Pendentes" e "Enviadas".
@@ -57,13 +57,13 @@ Este documento fornece uma visão detalhada do protótipo de um aplicativo desti
   - Botão "Enviar".
 
 ### Tela 7: Detalhes da Requisição
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela7.png)
+![img](/img/Tela7.png)
 - **Descrição:** Exibe detalhes adicionais de uma requisição selecionada.
 - **Componentes:**
   - Janela modal com a descrição da mensagem da requisição.
 
 ### Tela 8: Requisições Enviadas
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela8.png)
+![img](/img/Tela8.png)
 - **Descrição:** Exibe as requisições pendentes e enviadas após a exibição dos detalhes adicionais da requisição.
 - **Componentes:**
   - Abas de navegação: "Pendentes" e "Enviadas".
@@ -71,14 +71,14 @@ Este documento fornece uma visão detalhada do protótipo de um aplicativo desti
   - Botão "Enviar".
 
 ### Tela 9: Requisições Pendentes
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela9.png)
+![img](/img/Tela9.png)
 - **Descrição:** Exibe uma lista de requisições pendentes feitas pelo auxiliar.
 - **Componentes:**
   - Lista de requisições com identificador e nome do medicamento.
   - Botão "Enviar".
 
 ### Tela 10: Chat para Requisições
-![img](https://github.com/Inteli-College/2024-1B-T02-EC10-G05/blob/dev/docs/static/img/Tela10.png)
+![img](/img/Tela10.png)
 - **Descrição:** Interface de chat para comunicação sobre uma requisição.
 - **Componentes:**
   - Interface de mensagens de chat com ícones de usuário e status de envio.
