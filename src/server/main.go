@@ -13,25 +13,35 @@ func main() {
 
 	r := gin.Default()
 
+	m := ginmetrics.GetMonitor()
+	
+	m.AddMetric(&ginmetrics.Metric{
+		Type: 	ginmetrics.Counter,
+		Name: "db_requests_operations_total",
+		Description: "Total number of db requests operations",
+		Labels:      []string{"label1"},
+	})
+
+	m.AddMetric(&ginmetrics.Metric{
+		Type: 	ginmetrics.Counter,
+		Name: "db_users_operations_total",
+		Description: "Total number of db user operations",
+		Labels:      []string{"label1"},
+	})
+
+	m.SetMetricPath("/metrics")
+	m.Use(r)
+
 	clients := types.Clients{
 		Redis: db.SetupRedis(),
 		Pg:    db.SetupPostgres(),
 	}
 
-	m := ginmetrics.GetMonitor()
-	m.AddMetric(&ginmetrics.Metric{
-		Type: 	ginmetrics.Counter,
-		Name: "test_test_test",
-		Description: "testing forever!",
-		Labels:      []string{"label1"},
-	})
-	m.SetMetricPath("/metrics")
-	m.Use(r)
 
 	r.Use(middlewares.AuthUser())
 	r.Use(middlewares.AssertUserExistance(clients.Pg))
 
-	controllers.InitReportRoutes(r, clients)
+	// controllers.InitReportRoutes(r, clients)
 	controllers.InitRequestRoutes(r, clients)
 	controllers.InitClientRoutes(r, clients)
 	controllers.InitAdminRoutes(r, clients)

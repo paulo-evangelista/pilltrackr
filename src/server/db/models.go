@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/penglongli/gin-metrics/ginmetrics"
 	"gorm.io/gorm"
 )
 
@@ -27,11 +28,10 @@ type Request struct {
 	Closed      bool `gorm:"default:false"`
 	IsUrgent    bool `gorm:"default:false"`
 	Messages    []Message
-	Reports     []Report  `gorm:"many2many:request_reports;"`
-	Products    []Product `gorm:"many2many:request_products;"`
-	Assignees   []User    `gorm:"many2many:request_users;"`
-	PixiesId    uint
-	Pixies      Pixies
+	// Reports     []Report  `gorm:"many2many:request_reports;"`
+	Products []Product `gorm:"many2many:request_products;"`
+	// PixiesId    uint
+	// Pixies      Pixies
 }
 
 // Produto (Equipamentos, insumos, remédios, etc.)
@@ -41,10 +41,10 @@ type Product struct {
 	Code string `gorm:"unique;not null"` // Código do item (código de barras?)
 }
 
-type Report struct {
-	gorm.Model
-	Name string `gorm:"not null"`
-}
+// type Report struct {
+// 	gorm.Model
+// 	Name string `gorm:"not null"`
+// }
 
 // Mensagem
 type Message struct {
@@ -58,9 +58,19 @@ type Message struct {
 }
 
 // Máquinas Pixies
-type Pixies struct {
-	gorm.Model
-	Name     string `gorm:"not null"`
-	Floor    int
-	Products []Product `gorm:"many2many:pixies_products;"`
+// type Pixies struct {
+// 	gorm.Model
+// 	Name     string `gorm:"not null"`
+// 	Floor    int
+// 	Products []Product `gorm:"many2many:pixies_products;"`
+// }
+
+func (u *User) AfterSave(tx *gorm.DB) (err error) {
+	ginmetrics.GetMonitor().GetMetric("db_users_operations_total").Inc([]string{"label1"})
+	return
+}
+
+func (r *Request) AfterSave(tx *gorm.DB) (err error){
+	ginmetrics.GetMonitor().GetMetric("db_requests_operations_total").Inc([]string{"label1"})
+	return
 }

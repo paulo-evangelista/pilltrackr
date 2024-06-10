@@ -5,7 +5,7 @@ import (
 	"g5/server/db"
 	"g5/server/types"
 	"log"
-	"math"
+	// "math"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +16,7 @@ func CreateRequest(
 	productCodes []string,
 	isUrgent bool,
 	description string,
-	pixiesID uint,
+	// pixiesID uint,
 ) {
 
 	if len(productCodes) == 0 && description == "" {
@@ -47,7 +47,7 @@ func CreateRequest(
 		Description: description,
 		IsUrgent:    isUrgent,
 		Products:    products,
-		PixiesId:    pixiesID,
+		// PixiesId:    pixiesID,
 	}
 
 	// Salvar o novo Request no banco de dados
@@ -68,7 +68,7 @@ func GetUserRequests(c *gin.Context, clients types.Clients) {
 	}
 
 	var requests []db.Request
-	if err := clients.Pg.Preload("Products").Preload("Pixies").Where("user_id = ?", user.ID).Find(&requests).Error; err != nil {
+	if err := clients.Pg.Preload("Products").Where("user_id = ?", user.ID).Find(&requests).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Erro ao buscar pedidos do usuário"})
 		return
 	}
@@ -79,7 +79,7 @@ func GetUserRequests(c *gin.Context, clients types.Clients) {
 func GetRequest(c *gin.Context, clients types.Clients, id string) {
 
 	var request db.Request
-	if err := clients.Pg.Preload("Products").Preload("Pixies").Where("id = ?", id).First(&request).Error; err != nil {
+	if err := clients.Pg.Preload("Products").Where("id = ?", id).First(&request).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Pedido não encontrado"})
 		return
 	}
@@ -89,7 +89,7 @@ func GetRequest(c *gin.Context, clients types.Clients, id string) {
 
 func GetAllRequests(c *gin.Context, clients types.Clients) {
 	var requests []db.Request
-	if err := clients.Pg.Preload("Products").Preload("Pixies").Find(&requests).Error; err != nil {
+	if err := clients.Pg.Preload("Products").Find(&requests).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Erro ao buscar pedidos"})
 		return
 	}
@@ -106,62 +106,44 @@ func GetAllMessages(c *gin.Context, clients types.Clients, id string) {
 
 	c.JSON(200, messages)
 }
-func FindNearestPixies(c *gin.Context, clients types.Clients, productCode string, currentPixiesName string) {
-	var product db.Product
-	if err := clients.Pg.Where("code = ?", productCode).First(&product).Error; err != nil {
-		c.JSON(404, gin.H{"error": "Produto não encontrado"})
-		return
-	}
+// func FindNearestPixies(c *gin.Context, clients types.Clients, productCode string, currentPixiesName string) {
+// 	var product db.Product
+// 	if err := clients.Pg.Where("code = ?", productCode).First(&product).Error; err != nil {
+// 		c.JSON(404, gin.H{"error": "Produto não encontrado"})
+// 		return
+// 	}
 
-	var currentPixies db.Pixies
-	if err := clients.Pg.Where("name = ?", currentPixiesName).First(&currentPixies).Error; err != nil {
-		c.JSON(404, gin.H{"error": "Pixies atual não encontrada"})
-		return
-	}
+// 	var currentPixies db.Pixies
+// 	if err := clients.Pg.Where("name = ?", currentPixiesName).First(&currentPixies).Error; err != nil {
+// 		c.JSON(404, gin.H{"error": "Pixies atual não encontrada"})
+// 		return
+// 	}
 
-	var pixies []db.Pixies
-	if err := clients.Pg.Joins("JOIN pixies_products ON pixies_products.pixies_id = pixies.id").
-		Where("pixies_products.product_id = ?", product.ID).Where("pixies.name != ?", currentPixiesName).Find(&pixies).Error; err != nil {
-		c.JSON(500, gin.H{"error": "Erro ao buscar Pixies"})
-		return
-	}
+// 	var pixies []db.Pixies
+// 	if err := clients.Pg.Joins("JOIN pixies_products ON pixies_products.pixies_id = pixies.id").
+// 		Where("pixies_products.product_id = ?", product.ID).Where("pixies.name != ?", currentPixiesName).Find(&pixies).Error; err != nil {
+// 		c.JSON(500, gin.H{"error": "Erro ao buscar Pixies"})
+// 		return
+// 	}
 
-	if len(pixies) == 0 {
-		c.JSON(404, gin.H{"error": "Nenhuma Pixies encontrada com o produto solicitado"})
-		return
-	}
+// 	if len(pixies) == 0 {
+// 		c.JSON(404, gin.H{"error": "Nenhuma Pixies encontrada com o produto solicitado"})
+// 		return
+// 	}
 
-	closestPixies := pixies[0]
-	minDistance := math.Abs(float64(closestPixies.Floor - currentPixies.Floor))
+// 	closestPixies := pixies[0]
+// 	minDistance := math.Abs(float64(closestPixies.Floor - currentPixies.Floor))
 
-	for _, p := range pixies[1:] {
-		distance := math.Abs(float64(p.Floor - currentPixies.Floor))
-		if distance < minDistance {
-			closestPixies = p
-			minDistance = distance
-		}
-	}
+// 	for _, p := range pixies[1:] {
+// 		distance := math.Abs(float64(p.Floor - currentPixies.Floor))
+// 		if distance < minDistance {
+// 			closestPixies = p
+// 			minDistance = distance
+// 		}
+// 	}
 
-	c.JSON(200, gin.H{
-		"message": fmt.Sprintf("A Pixies mais próxima com o medicamento é: %s", closestPixies.Name),
-		"pixies":  closestPixies.Name,
-	})
-}
-
-func AddAssigneeToRequest(clients types.Clients, requestID uint, assigneeID uint) error {
-	var request db.Request
-	if err := clients.Pg.Where("id = ?", requestID).First(&request).Error; err != nil {
-		return err
-	}
-
-	var assignee db.User
-	if err := clients.Pg.Where("id = ?", assigneeID).First(&assignee).Error; err != nil {
-		return err
-	}
-
-	if err := clients.Pg.Model(&request).Association("Assignees").Append(&assignee); err != nil {
-		return err
-	}
-
-	return nil
-}
+// 	c.JSON(200, gin.H{
+// 		"message": fmt.Sprintf("A Pixies mais próxima com o medicamento é: %s", closestPixies.Name),
+// 		"pixies":  closestPixies.Name,
+// 	})
+// }

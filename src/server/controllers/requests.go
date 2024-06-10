@@ -5,26 +5,21 @@ import (
 	mw "g5/server/middlewares"
 	"g5/server/services"
 	"g5/server/types"
-
+	"github.com/go-playground/validator/v10"
 	"github.com/gin-gonic/gin"
 )
 
-type createRequestBody struct {
-	ProductCodes []string `json:"productCodes"`
+type createProductRequestBody struct {
+	ProductCodes []string `json:"productCodes" validate:"required"`
 	Urgent       bool     `json:"urgent"`
 	Description  string   `json:"description"`
-	PixiesID     uint     `json:"pixiesID"`
+	// PixiesID     uint     `json:"pixiesID"`
 }
 
-type findPixiesRequestBody struct {
-	ProductCode   string `json:"productCode"`
-	CurrentPixies string `json:"currentPixies"`
-}
-
-type addAssigneeRequestBody struct {
-	RequestID uint `json:"requestID"`
-	UserID    uint `json:"userID"`
-}
+// type findPixiesRequestBody struct {
+// 	ProductCode   string `json:"productCode"`
+// 	CurrentPixies string `json:"currentPixies"`
+// }
 
 func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 
@@ -35,9 +30,16 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 
 			fmt.Println(c.Get("user_id"))
 
-			var req createRequestBody
+			var req createProductRequestBody
 
 			if err := c.BindJSON(&req); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+
+			validate := validator.New()
+
+			if err := validate.Struct(req); err != nil {
 				c.JSON(400, gin.H{"error": err.Error()})
 				return
 			}
@@ -50,7 +52,7 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 				req.ProductCodes,
 				req.Urgent || false,
 				req.Description,
-				req.PixiesID,
+				// req.PixiesID,
 			)
 
 		})
@@ -59,7 +61,7 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 			services.GetUserRequests(c, clients)
 		})
 
-		requests.GET("/get/:id", mw.IsAdmin(), func(c *gin.Context) {
+		requests.GET("/get/:id", func(c *gin.Context) {
 			services.GetRequest(c, clients, c.Param("id"))
 		})
 
@@ -72,33 +74,19 @@ func InitRequestRoutes(r *gin.Engine, clients types.Clients) {
 		requests.GET("/:id/messages", func(c *gin.Context) {
 			services.GetAllMessages(c, clients, c.Param("id"))
 		})
-		requests.POST("/findPixies", func(c *gin.Context) {
-			var req findPixiesRequestBody
 
-			if err := c.BindJSON(&req); err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
+		// requests.POST("/findPixies", func(c *gin.Context) {
+		// 	var req findPixiesRequestBody
 
-			fmt.Println("Find Pixies request received:", req)
+		// 	if err := c.BindJSON(&req); err != nil {
+		// 		c.JSON(400, gin.H{"error": err.Error()})
+		// 		return
+		// 	}
 
-			services.FindNearestPixies(c, clients, req.ProductCode, req.CurrentPixies)
-		})
+		// 	fmt.Println("Find Pixies request received:", req)
+
+		// 	services.FindNearestPixies(c, clients, req.ProductCode, req.CurrentPixies)
+		// })
 	
-		requests.POST("/addAssignee", mw.IsAdmin(), func(c *gin.Context) {
-			var req addAssigneeRequestBody
-
-			if err := c.BindJSON(&req); err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
-
-			if err := services.AddAssigneeToRequest(clients, req.RequestID, req.UserID); err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
-
-			c.JSON(200, gin.H{"message": "Assignee added successfully"})
-		})
 	}
 }
