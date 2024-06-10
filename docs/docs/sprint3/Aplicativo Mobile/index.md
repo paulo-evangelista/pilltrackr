@@ -11,7 +11,7 @@ Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usua
 
 ### Enfermeiro
 
-![Telas do Enfermeiro](/docs/static/img/enf-screens.png)
+![Telas do Enfermeiro](/img/enf-screens.png)
 
 1. **Tela de Escolha:** A tela inicial onde o enfermeiro escolhe o motivo da requisição.
 
