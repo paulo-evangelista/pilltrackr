@@ -11,7 +11,7 @@ Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usua
 
 ### Enfermeiro
 
-![Telas do Enfermeiro](/docs/static/img/enf-screens.png)
+![Telas do Enfermeiro](/img/enf-screens.png)
 
 1. **Tela de Escolha:** A tela inicial onde o enfermeiro escolhe o motivo da requisição.
 
@@ -25,7 +25,7 @@ Para nosso aplicativo, dividimos em 2 fluxos de telas principais, um para o usua
 
 ### Farmacia Central
 
-![Telas da Farmacia Central](/docs/static/img/fc-screens.png)
+![Telas da Farmacia Central](/img/fc-screens.png)
 
 1. **Tela de Requisições Pendentes:** Lista de requisições pendentes para serem processadas pela farmácia central.
 
@@ -75,10 +75,10 @@ Este fluxo de telas garante que tanto os enfermeiros quanto a farmácia central 
 A tela de criação de requisições do enfermeiro já está integrada com nosso backend, enviando e armazenando as requisições feitas pela nossa aplicação
 
 ### Requisição da Aplicação
-![Flutter Request](/docs/static/img/flutter-request-feedback.jpeg)
+![Flutter Request](/img/flutter-request-feedback.jpeg)
 
 ### Feedback do Backend
-![Backend Feedback](/docs/static/img/backend-reques-feedback.png)
+![Backend Feedback](/img/backend-reques-feedback.png)
 
 ### Get para o DB através do Insomnia
-![Insomnia Request](/docs/static/img/insomnia-request-feedback.png)
+![Insomnia Request](/img/insomnia-request-feedback.png)
