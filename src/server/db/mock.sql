@@ -1,4 +1,3 @@
-2-- Inserindo dados com IDs incrementais no campo Code como inteiro
 INSERT INTO products (name, code) VALUES 
 ('Comp. Dipirona 500mg', 1000),
 ('Ampola de Ceftriaxona 1g', 1001),
