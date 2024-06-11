@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/nursery/home.dart';
+import 'package:frontend/views/nursery/my_requests.dart';
 
 class FeedbackRequest extends StatelessWidget {
   final String requestId;
@@ -66,7 +67,7 @@ class FeedbackRequest extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeNursery()),
+                    MaterialPageRoute(builder: (context) => MyRequests()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
