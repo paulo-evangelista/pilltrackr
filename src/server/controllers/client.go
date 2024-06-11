@@ -36,7 +36,7 @@ func InitClientRoutes(r *gin.Engine, clients types.Clients) {
 		})
 
 		client.GET("/getPreRequestData", func(c *gin.Context) {
-			products, pyxis, err := services.GetAllProducts(clients)
+			products, pyxis, err := services.GetPreRequestData(clients)
 			if err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return

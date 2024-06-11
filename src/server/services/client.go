@@ -11,7 +11,7 @@ type UserUpdateParams struct {
 	Position *string `json:"position"`
 }
 
-func GetAllProducts(clients types.Clients) ([]db.Product, []db.Pyxis, error) {
+func GetPreRequestData(clients types.Clients) ([]db.Product, []db.Pyxis, error) {
 
 	var products []db.Product
 
