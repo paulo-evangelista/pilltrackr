@@ -12,9 +12,7 @@ import (
 type User struct {
 	gorm.Model
 	InternalId string `gorm:"unique;not null"`
-	Position   string
 	Name       string
-	Email      string
 	Requests   []Request
 	Messages   []Message
 	IsAdmin    bool `gorm:"default:false"` // true se o usuário é da central, false se é um usuário comum
@@ -46,7 +44,7 @@ const (
 type Product struct {
 	gorm.Model
 	Name string `gorm:"not null"`
-	Code string `gorm:"unique;not null"` // Código do item (código de barras?)
+	Code int `gorm:"unique;not null"` // Código do item (código de barras?)
 }
 
 // Mensagem
