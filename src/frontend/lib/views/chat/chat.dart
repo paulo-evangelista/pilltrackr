@@ -13,6 +13,8 @@ import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -42,14 +44,43 @@ class _ChatPageState extends State<ChatPage> {
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
+  final int request = 1;
+  late WebSocketChannel _channel;
 
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    _connectWebSocket();
   }
 
-  void _addMessage(types.Message message) {
+  void _connectWebSocket() {
+    final token = 'admin';
+    final url = 'wss://pilltrackr.cathena.io/ws/?token=$token';
+    _channel = WebSocketChannel.connect(Uri.parse(url));
+
+    _channel.stream.listen((message) {
+      final decodedMessage = json.decode(message);
+      _handleIncomingMessage(decodedMessage);
+      print('Received: $decodedMessage');
+    });
+  }
+
+  void _handleIncomingMessage(Map<String, dynamic> message) {
+    if (message['request'] == request) {
+      final newMessage = types.TextMessage(
+        author: types.User(id: message['from']), // Assumindo que 'from' é o ID do autor
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
+        text: message['content'],
+      );
+
+      _addMessage(newMessage, incoming: true);
+    }
+  }
+
+
+  void _addMessage(types.Message message, {bool incoming = false}) {
     setState(() {
       _messages.insert(0, message);
     });
@@ -212,6 +243,12 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     _addMessage(textMessage);
+
+    final wsMessage = {
+      "request": request,
+      "content":message.text,
+    };
+    _channel.sink.add(json.encode(wsMessage));
   }
 
   void _loadMessages() async {
