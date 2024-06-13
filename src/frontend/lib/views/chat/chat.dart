@@ -252,14 +252,26 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final response = await http.get(Uri.parse('https://pilltrackr.cathena.io/api/$request/messages'));
 
-    setState(() {
-      _messages = messages;
-    });
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonMessages = json.decode(response.body);
+      final messages = jsonMessages.map((json) {
+        return types.TextMessage(
+          author: types.User(id: json['from']),
+          createdAt: DateTime.parse(json['createdAt']).millisecondsSinceEpoch,
+          id: json['id'],
+          text: json['content'],
+        );
+      }).toList();
+
+      setState(() {
+        _messages = messages;
+      });
+    } else {
+      // Handle error
+      print('Failed to load messages');
+    }
   }
 
   @override
