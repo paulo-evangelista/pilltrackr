@@ -37,7 +37,27 @@ class _ListTileNurseryState extends State<ListTileNursery> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('$_title'),
-          content: Text('A requisição foi encaminhada para a farmácia central \nStatus: $_status'),
+
+          content:
+            RichText(
+              text: TextSpan(
+                text: 'A Requisição foi encaminhada para a Farmácia Central \n\n',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  TextSpan(text: 'Items: ', style: const TextStyle(fontWeight: FontWeight.normal,)),
+                  TextSpan(text: 'Itens 1 e 2 \n', style: TextStyle(color: Colors.black,)),
+                  TextSpan(text: 'Status: ', style: TextStyle(color: Colors.black)),
+                  TextSpan(text: _status, style: TextStyle(color: Colors.orange.shade800,)),
+                  
+                ],
+              ),
+            ), 
+          // Text('A requisição foi encaminhada para a farmácia central \nStatus: $_status'),
+          
           actions: <Widget>[
             TextButton(
               child: const Text('Fechar'),

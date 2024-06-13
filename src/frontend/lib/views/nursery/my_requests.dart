@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/services/request_service.dart'; 
 import '../../widgets/list_tile_nursery.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
@@ -30,8 +30,9 @@ class _MyRequestsState extends State<MyRequests> {
 
       backgroundColor: Color(0xFFECF0F3),
       
-      body: const Center(
-        child: ListTileNursery(title: 'Requisição #1', subtitle: 'MS1371 - Dipirona 500mgR'),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ListTileNursery(title: 'Requisição #1', subtitle: 'MS1371 - Dipirona 500mgR'), 
       ),
     );
   }

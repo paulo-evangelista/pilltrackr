@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/nursery/feedback_request.dart';
+import 'package:dio/dio.dart';
+import '../../services/request_service.dart';
 import 'dart:convert';
-
 
 class MedicineRequest extends StatefulWidget {
   @override
@@ -9,29 +9,72 @@ class MedicineRequest extends StatefulWidget {
 }
 
 class _MedicineRequest extends State<MedicineRequest> {
-  final List<String> _medicines = ['Aspirina', 'Paracetamol', 'Ibuprofeno'];
+  List<String> _medicines = [];
+  Map<String, int> _medicineCodes = {}; // Map to hold medicine name and corresponding code
   String? _selectedMedicine;
-  late String _productCode;
+  int? _productCode; // Product code associated with the selected medicine
   bool _isImmediate = false;
   final TextEditingController _descriptionController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchMedicines();
+  }
+
+  Future<void> _fetchMedicines() async {
+    try {
+      var response = await dio.get('/client/getPreRequestData');
+      setState(() {
+        List<dynamic> products = response.data['products'];
+        _medicines = products.map((product) => product['Name'] as String).toList();
+        for (var product in products) {
+          _medicineCodes[product['Name']] = product['Code'] as int;
+        }
+      });
+    } catch (e) {
+      print('Erro ao buscar medicamentos: $e');
+    }
+  }
+
   Future<void> _sendRequest() async {
-    String requestId = 'MR-0042F';
+    String requestId = 'PR-0081P';
     String pyxisLocation = 'MS1347 - 14º Andar';
-    Navigator.pushNamed(
-      context,
-      '/feedbackRequest',
-      arguments: {'requestId': requestId, 'pyxisLocation': pyxisLocation},
-    );
-    return print('botão pressionado');
+
+    if (_selectedMedicine == null || _productCode == null) {
+      print('Medicamento ou código do produto não selecionado.');
+      return;
+    }
+
+    try {
+      var response = await dio.post('/request/create', data: {
+        "isUrgent":  _isImmediate,
+        "description": _descriptionController.text,
+        "productCodes":  [_productCode],
+        "pyxisID": 2
+      });
+
+      if (response.statusCode == 201) {
+        print('Requisição enviada com sucesso.');
+        Navigator.pushNamed(
+          context,
+          '/feedbackRequest',
+          arguments: {'requestId': requestId, 'pyxisLocation': pyxisLocation},
+        );
+      } else {
+        print('Erro ao enviar requisição: ${response.statusMessage}');
+      }
+    } catch (e) {
+      print('Erro ao enviar requisição: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECF0F3), 
+      backgroundColor: Color(0xFFECF0F3),
       appBar: AppBar(
-        backgroundColor: Color(0xFFECF0F3), 
+        backgroundColor: Color(0xFFECF0F3),
         title: const Text(
           'Medicamentos',
           style: TextStyle(
@@ -60,7 +103,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                 onChanged: (newValue) {
                   setState(() {
                     _selectedMedicine = newValue;
-                    _productCode = '00{$_selectedMedicine}';
+                    _productCode = _medicineCodes[newValue];
                   });
                 },
                 items: _medicines.map((medicine) {
@@ -91,7 +134,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                 label: const Text('Adicionar medicamento'),
               ),
               const SizedBox(height: 20),
-              
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -153,7 +196,6 @@ class _MedicineRequest extends State<MedicineRequest> {
           ),
         ),
       )
-        
     );
   }
 }
