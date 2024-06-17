@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/request_service.dart'; 
+import 'package:dio/dio.dart';
+import '../../services/request_service.dart';
 import '../../widgets/list_tile_nursery.dart';
-import 'package:flutter/foundation.dart';
-// import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 
 class MyRequests extends StatefulWidget {
   @override
@@ -12,6 +9,24 @@ class MyRequests extends StatefulWidget {
 }
 
 class _MyRequestsState extends State<MyRequests> {
+  List<Map<String, dynamic>> _requests = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRequests();
+  }
+
+  Future<void> _fetchRequests() async {
+    try {
+      var response = await dio.get('/request/user');
+      setState(() {
+        _requests = List<Map<String, dynamic>>.from(response.data);
+      });
+    } catch (e) {
+      print('Erro ao buscar requisições: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +42,25 @@ class _MyRequestsState extends State<MyRequests> {
         backgroundColor: Color(0xFFECF0F3),
         elevation: 0,
       ),
-
       backgroundColor: Color(0xFFECF0F3),
-      
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: ListTileNursery(title: 'Requisição #1', subtitle: 'MS1371 - Dipirona 500mgR'), 
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: _requests.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: _requests.length,
+                itemBuilder: (context, index) {
+                  var request = _requests[index];
+                  var productNames = (request['Products'] as List<dynamic>)
+                      .map((product) => product['Name'] as String)
+                      .join(', ');
+                  return ListTileNursery(
+                    title: 'Requisição #${request['ID']}',
+                    subtitle: '$productNames - ${request['Description']}',
+                    // isImmediate: request['IsUrgent'],
+                  );
+                },
+              ),
       ),
     );
   }
