@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/views/chat/chat.dart';
 
 import 'package:frontend/views/fc/requests.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/chat',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/successRequest':
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         '/otherRequest': (context) => OtherRequests(),
         '/newRequests': (context) => NewRequest(),
         '/myRequests': (context) => MyRequests(),
+        '/chat': (context) => const ChatPage(),
       },
     );
   }

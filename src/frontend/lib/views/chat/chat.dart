@@ -3,16 +3,15 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -42,14 +41,58 @@ class _ChatPageState extends State<ChatPage> {
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
+  final _admin = const types.User(
+    id: 'admin-id',
+  );
+  final int request = 1;
+  late WebSocketChannel _channel;
 
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    _connectWebSocket();
   }
 
-  void _addMessage(types.Message message) {
+  void _connectWebSocket() {
+    final token = 'admin';
+    final url = 'wss://pilltrackr.cathena.io/ws/?token=$token';
+
+    try {
+      _channel = WebSocketChannel.connect(Uri.parse(url));
+      
+      _channel.stream.listen((message) {
+        final decodedMessage = json.decode(message);
+        _handleIncomingMessage(decodedMessage);
+        print('Received: $decodedMessage');
+      }, onError: (error) {
+        print('WebSocket error: $error');
+        // Tentar reconectar após um tempo
+        Future.delayed(Duration(seconds: 5), () => _connectWebSocket());
+      }, onDone: () {
+        print('WebSocket closed');
+        // Tentar reconectar após um tempo
+        Future.delayed(Duration(seconds: 5), () => _connectWebSocket());
+      });
+    } catch (e) {
+      print('WebSocketChannelException: $e');
+    }
+  }
+
+  void _handleIncomingMessage(Map<String, dynamic> message) {
+    if (message['request'] == request) {
+      final newMessage = types.TextMessage(
+        author: types.User(id: message['from']), // Assumindo que 'from' é o ID do autor
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
+        text: message['content'],
+      );
+
+      _addMessage(newMessage, incoming: true);
+    }
+  }
+
+  void _addMessage(types.Message message, {bool incoming = false}) {
     setState(() {
       _messages.insert(0, message);
     });
@@ -64,16 +107,6 @@ class _ChatPageState extends State<ChatPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('Photo'),
-                ),
-              ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -112,32 +145,6 @@ class _ChatPageState extends State<ChatPage> {
         name: result.files.single.name,
         size: result.files.single.size,
         uri: result.files.single.path!,
-      );
-
-      _addMessage(message);
-    }
-  }
-
-  void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
-
-    if (result != null) {
-      final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
-
-      final message = types.ImageMessage(
-        author: _user,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        height: image.height.toDouble(),
-        id: const Uuid().v4(),
-        name: result.name,
-        size: bytes.length,
-        uri: result.path,
-        width: image.width.toDouble(),
       );
 
       _addMessage(message);
@@ -189,20 +196,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _handlePreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
-      previewData: previewData,
-    );
-
-    setState(() {
-      _messages[index] = updatedMessage;
-    });
-  }
-
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
       author: _user,
@@ -212,17 +205,41 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     _addMessage(textMessage);
+
+    final wsMessage = {
+      "request": request,
+      "content": message.text,
+    };
+    _channel.sink.add(json.encode(wsMessage));
   }
 
   void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final response = await http.get(
+      Uri.parse('https://pilltrackr.cathena.io/api/request/$request/messages'),
+      headers: {
+        'Authorization': 'Bearer admin',
+      },
+    );
 
-    setState(() {
-      _messages = messages;
-    });
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonMessages = json.decode(response.body);
+      final messages = jsonMessages.map((json) {
+        final isSentByUser = json['SentByUser'] ?? false;
+
+        return types.TextMessage(
+          author: isSentByUser ? _user : _admin, // Define o autor com base em SentByUser
+          createdAt: DateTime.parse(json['CreatedAt']).millisecondsSinceEpoch,
+          id: json['ID'].toString(), // Convertendo ID para string
+          text: json['Content'],
+        );
+      }).toList();
+
+      setState(() {
+        _messages = messages;
+      });
+    } else {
+      print('Failed to load messages');
+    }
   }
 
   @override
@@ -231,7 +248,6 @@ class _ChatPageState extends State<ChatPage> {
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
-          onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
           showUserAvatars: true,
           showUserNames: true,
