@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import '../../services/request_service.dart';
-import 'dart:convert';
 
 class MedicineRequest extends StatefulWidget {
+  const MedicineRequest({super.key});
+
   @override
   _MedicineRequest createState() => _MedicineRequest();
 }
 
 class _MedicineRequest extends State<MedicineRequest> {
   List<String> _medicines = [];
-  Map<String, int> _medicineCodes = {}; // Map to hold medicine name and corresponding code
+  final Map<String, int> _medicineCodes = {}; // Map to hold medicine name and corresponding code
   String? _selectedMedicine;
   int? _productCode; // Product code associated with the selected medicine
   bool _isImmediate = false;
@@ -72,9 +72,9 @@ class _MedicineRequest extends State<MedicineRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECF0F3),
+      backgroundColor: const Color(0xFFECF0F3),
       appBar: AppBar(
-        backgroundColor: Color(0xFFECF0F3),
+        backgroundColor: const Color(0xFFECF0F3),
         title: const Text(
           'Medicamentos',
           style: TextStyle(
@@ -115,7 +115,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    borderSide: BorderSide(color: Colors.black, width: 3.0),
+                    borderSide: const BorderSide(color: Colors.black, width: 3.0),
                   ),
                   filled: true,
                   fillColor: Colors.white,

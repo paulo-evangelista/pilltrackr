@@ -3,6 +3,8 @@ import 'package:frontend/views/nursery/medicine_request.dart';
 import 'package:frontend/views/nursery/other_request.dart';
 
 class HomeNursery extends StatefulWidget {
+  const HomeNursery({super.key});
+
   @override
   _HomeNurseryState createState() => _HomeNurseryState();
 }
@@ -13,7 +15,7 @@ class _HomeNurseryState extends State<HomeNursery> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECF0F3), 
+      backgroundColor: const Color(0xFFECF0F3), 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -61,7 +63,7 @@ class _HomeNurseryState extends State<HomeNursery> {
                     fillColor: Colors.black,
                     color: Colors.black,
                     selectedColor: Colors.white,
-                    constraints: BoxConstraints(minHeight: 70.0, minWidth: 150.0),
+                    constraints: const BoxConstraints(minHeight: 70.0, minWidth: 150.0),
                     children: const [
                       Text('Medicamentos'),
                       Text('Outros'),
@@ -77,13 +79,13 @@ class _HomeNurseryState extends State<HomeNursery> {
                   if (selectedOption == 'Outros') {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OtherRequest()),
+                      MaterialPageRoute(builder: (context) => const OtherRequest()),
                     );
                   } 
                   else if (selectedOption == 'Medicamentos') {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MedicineRequest()), // Navega para NewRequest
+                      MaterialPageRoute(builder: (context) => const MedicineRequest()), // Navega para NewRequest
                     );
                   }
                 },

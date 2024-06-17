@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:frontend/navigation_menu.dart';
 import 'package:frontend/views/nursery/feedback_request.dart';
 // Views
-import 'package:frontend/views/nursery/home.dart';
 import 'package:frontend/views/nursery/other_request.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,8 +50,8 @@ class MyApp extends StatelessWidget {
         }
       },
       routes: {
-        '/': (context) => NavigationMenu(),
-        '/otherRequest': (context) => OtherRequest(),
+        '/': (context) => const NavigationMenu(),
+        '/otherRequest': (context) => const OtherRequest(),
         // '/newRequests': (context) => NewRequest(),
         // '/myRequests': (context) => MyRequests(),
       },

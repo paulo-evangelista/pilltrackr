@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ListTileNursery extends StatefulWidget {
+class ListTilePharmacy extends StatefulWidget {
   // final Request request;
-  
+
   final String title;
   final String subtitle;
 
-  const ListTileNursery({
+  const ListTilePharmacy({
     super.key,
     required this.title,
     required this.subtitle,
@@ -14,14 +14,13 @@ class ListTileNursery extends StatefulWidget {
   });
 
   @override
-  _ListTileNurseryState createState() => _ListTileNurseryState();
+  _ListTilePharmacyState createState() => _ListTilePharmacyState();
 }
 
-class _ListTileNurseryState extends State<ListTileNursery> {
+class _ListTilePharmacyState extends State<ListTilePharmacy> {
   // late Request _request;
   late String _title;
   late String _subtitle;
-  late final String _status = 'Aguardando Aprovação';
 
   @override
   void initState() {
@@ -35,28 +34,8 @@ class _ListTileNurseryState extends State<ListTileNursery> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(_title),
-
-          content:
-            RichText(
-              text: TextSpan(
-                text: 'A Requisição foi encaminhada para a Farmácia Central \n\n',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black,
-                ),
-                children: <TextSpan>[
-                  const TextSpan(text: 'Items: ', style: TextStyle(fontWeight: FontWeight.normal,)),
-                  const TextSpan(text: 'Itens 1 e 2 \n', style: TextStyle(color: Colors.black,)),
-                  const TextSpan(text: 'Status: ', style: TextStyle(color: Colors.black)),
-                  TextSpan(text: _status, style: TextStyle(color: Colors.orange.shade800,)),
-                  
-                ],
-              ),
-            ), 
-          // Text('A requisição foi encaminhada para a farmácia central \nStatus: $_status'),
-          
+          title: Text('Requisição $_title'),
+          content: const Text('A requisição foi encaminhada para a farmácia central \nStatus:'),
           actions: <Widget>[
             TextButton(
               child: const Text('Fechar'),
@@ -99,7 +78,7 @@ class _ListTileNurseryState extends State<ListTileNursery> {
         child: Icon(Icons.mark_chat_unread_outlined),
       ),
       onTap: () => _showModal(context),
-      isThreeLine: false,
+      isThreeLine: true,
     );
   }
 }

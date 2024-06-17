@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/nursery/feedback_request.dart';
-import 'dart:convert';
 
 
 class OtherRequest extends StatefulWidget {
+  const OtherRequest({super.key});
+
   @override
   _OtherRequest createState() => _OtherRequest();
 }
@@ -28,9 +28,9 @@ class _OtherRequest extends State<OtherRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECF0F3), 
+      backgroundColor: const Color(0xFFECF0F3), 
       appBar: AppBar(
-        backgroundColor: Color(0xFFECF0F3), 
+        backgroundColor: const Color(0xFFECF0F3), 
         title: const Text(
           'Reportar Problema',
           style: TextStyle(
