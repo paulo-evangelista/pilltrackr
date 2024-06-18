@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/views/nursery/home.dart';
+import 'package:frontend/views/nursery/my_requests.dart';
 import 'package:get/get.dart';
 
 class NavigationMenu extends StatelessWidget {
@@ -30,5 +31,5 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController{
   final Rx<int> selectedIndex = 0.obs;
 
-  final screens = [ HomeNursery(), Container(color: Colors.purple,) ];
+  final screens = [ HomeNursery(), MyRequests() ];
 }
