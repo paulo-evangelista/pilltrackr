@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,24 +34,22 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
-  final _user = const types.User(
-    id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-  );
-  final _admin = const types.User(
-    id: 'admin-id',
-  );
+  final String _userToken = 'paulo';
+  late final types.User _user;
   final int request = 1;
   late WebSocketChannel _channel;
+  final AutoScrollController _scrollController = AutoScrollController();
 
   @override
   void initState() {
     super.initState();
+    _user = types.User(id: _userToken == 'admin' ? 'admin-id' : '82091008-a484-4a89-ae75-a22bf8d6f3ac');
     _loadMessages();
     _connectWebSocket();
   }
 
   void _connectWebSocket() {
-    final token = "paulo";
+    final token = _userToken;
     final url = 'wss://pilltrackr.cathena.io/ws/?token=$token';
 
     try {
@@ -58,16 +57,16 @@ class _ChatPageState extends State<ChatPage> {
 
       _channel.stream.listen((message) {
         final decodedMessage = json.decode(message);
-        _handleIncomingMessage(decodedMessage);
         print('Received: $decodedMessage');
+        _handleIncomingMessage(decodedMessage);
       }, onError: (error) {
         print('WebSocket error: $error');
         // Tentar reconectar após um tempo
-        Future.delayed(Duration(seconds: 5), () => _connectWebSocket());
+        Future.delayed(Duration(seconds: 20), () => _connectWebSocket());
       }, onDone: () {
         print('WebSocket closed');
         // Tentar reconectar após um tempo
-        Future.delayed(Duration(seconds: 5), () => _connectWebSocket());
+        Future.delayed(Duration(seconds: 10), () => _connectWebSocket());
       });
     } catch (e) {
       print('WebSocketChannelException: $e');
@@ -75,23 +74,28 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleIncomingMessage(Map<String, dynamic> message) {
-    if (message['request'] == request) {
+    final messageData = message['message'];
+    if (messageData['RequestID'] == request) {
+      final isSentByUser = messageData['SentByUser'] ?? false;
+      final author = types.User(id: isSentByUser ? _user.id : 'admin-id');
+
       final newMessage = types.TextMessage(
-        author: types.User(id: message['from']),
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        id: const Uuid().v4(),
-        text: message['content'],
+        author: author,
+        createdAt: DateTime.parse(messageData['CreatedAt']).millisecondsSinceEpoch,
+        id: messageData['ID'].toString(),
+        text: messageData['Content'],
       );
 
-      _addMessage(newMessage, incoming: true);
+      _addMessage(newMessage);
     }
   }
 
-  void _addMessage(types.Message message, {bool incoming = false}) {
+  void _addMessage(types.Message message) {
     setState(() {
-      _messages.add(message);
+      _messages.insert(0, message);
     });
   }
+
 
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
@@ -122,9 +126,10 @@ class _ChatPageState extends State<ChatPage> {
       final List<dynamic> jsonMessages = json.decode(response.body);
       final messages = jsonMessages.map((json) {
         final isSentByUser = json['SentByUser'] ?? false;
+        final author = types.User(id: isSentByUser ? _user.id : 'admin-id');
 
         return types.TextMessage(
-          author: isSentByUser ? _user : _admin,
+          author: author,
           createdAt: DateTime.parse(json['CreatedAt']).millisecondsSinceEpoch,
           id: json['ID'].toString(),
           text: json['Content'],
@@ -143,6 +148,12 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: const Text('Chat'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: _loadMessages,
+            ),
+          ],
         ),
         body: Chat(
           messages: _messages,
@@ -150,10 +161,7 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _loadMessages,
-          child: const Icon(Icons.refresh),
+          scrollController: _scrollController,
         ),
       );
 }
