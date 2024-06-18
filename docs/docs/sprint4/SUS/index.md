@@ -44,11 +44,6 @@ Abaixo estão os resultados individuais para as 10 pessoas que participaram do t
 
 Para obter a média dos resultados, somamos todas as pontuações individuais e dividimos pelo número de participantes.
 
-
-$$
-\text{Média} = \frac{75 + 75 + 60 + 75 + 70 + 67.5 + 65 + 65 + 75 + 70}{10} = 69.75
-$$
-
 Portanto, a média das pontuações SUS é 69,25.
 
 ## Como o SUS Pode Melhorar o Projeto
