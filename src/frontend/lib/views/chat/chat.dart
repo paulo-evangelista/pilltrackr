@@ -62,11 +62,11 @@ class _ChatPageState extends State<ChatPage> {
       }, onError: (error) {
         print('WebSocket error: $error');
         // Tentar reconectar após um tempo
-        Future.delayed(Duration(seconds: 5), () => _connectWebSocket());
+        Future.delayed(Duration(seconds: 20), () => _connectWebSocket());
       }, onDone: () {
         print('WebSocket closed');
         // Tentar reconectar após um tempo
-        Future.delayed(Duration(seconds: 5), () => _connectWebSocket());
+        Future.delayed(Duration(seconds: 10), () => _connectWebSocket());
       });
     } catch (e) {
       print('WebSocketChannelException: $e');
