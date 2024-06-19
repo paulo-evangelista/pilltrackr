@@ -1,20 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import '../../../models/request.dart';
-import '../../../services/pharmacy_request_service.dart';
-import '../../../widgets/list_tile_pharmacy.dart';
+import 'package:frontend/services/pharmacy_request_service.dart';
+import 'package:frontend/widgets/list_tile_pharmacy.dart';
 
-class MyRequests extends StatefulWidget {
-  const MyRequests({super.key});
-
+class PendingRequests extends StatefulWidget {
   @override
-  _MyRequestsState createState() => _MyRequestsState();
+  _PendingRequestsState createState() => _PendingRequestsState();
 }
 
-class _MyRequestsState extends State<MyRequests> {
-  final RequestService _requestService = RequestService();
-  List<Request> _requests = [];
+class _PendingRequestsState extends State<PendingRequests> {
+  List<Map<String, dynamic>> _requests = [];
+  List<int> _requestOrder = []; // Lista para armazenar a ordem dos IDs das requisições
 
   @override
   void initState() {
@@ -24,35 +20,28 @@ class _MyRequestsState extends State<MyRequests> {
 
   Future<void> _fetchRequests() async {
     try {
-      List<Request> requests = await _requestService.fetchRequests();
+      var response = await dio.get('/request/getAll');
       setState(() {
-        _requests = requests;
+        _requests = List<Map<String, dynamic>>.from(response.data);
+        _requestOrder = _requests.map((request) => request['ID'] as int).toList();
       });
     } catch (e) {
       print('Erro ao buscar requisições: $e');
     }
   }
 
-  Future<void> _sendRequests() async {
-    try {
-      await _requestService.sendRequests(_requests);
-      if (kDebugMode) {
-        print('Requisições enviadas com sucesso!');
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Erro ao enviar requisições: $e');
-      }
-    }
-  }
-
   void _onReorder(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
     setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
-      final Request item = _requests.removeAt(oldIndex);
-      _requests.insert(newIndex, item);
+      final request = _requests.removeAt(oldIndex);
+      _requests.insert(newIndex, request);
+
+      // Atualizar a ordem dos IDs
+      final requestId = _requestOrder.removeAt(oldIndex);
+      _requestOrder.insert(newIndex, requestId);
+      print(_requestOrder);
     });
   }
 
@@ -61,7 +50,7 @@ class _MyRequestsState extends State<MyRequests> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pilltrackr',
+          'Requisições Pendentes',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -73,33 +62,22 @@ class _MyRequestsState extends State<MyRequests> {
       backgroundColor: Color(0xFFECF0F3),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: _requests.isEmpty
-                  ? Center(child: CircularProgressIndicator())
-                  : ReorderableListView(
-                      onReorder: _onReorder,
-                      children: _requests.map((request) {
-                        return Card(
-                          key: ValueKey(request.id),
-                          child: ListTilePharmacy(
-                            title: request.productName,
-                            subtitle: request.status,
-                          ),
-                        );
-                      }).toList(),
-                    ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: _sendRequests,
-                child: const Text('Enviar'),
+        child: _requests.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : ReorderableListView(
+                onReorder: _onReorder,
+                children: _requests.map((request) {
+                  var index = _requests.indexOf(request);
+                  var productNames = (request['Products'] as List<dynamic>)
+                      .map((product) => product['Name'] as String)
+                      .join(', ');
+                  return ListTile(
+                    key: ValueKey(request['ID']),
+                    title: Text('Requisição #${request['ID']}'),
+                    subtitle: Text('$productNames - ${request['Description']}'),
+                  );
+                }).toList(),
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

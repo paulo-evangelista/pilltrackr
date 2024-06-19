@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Request {
-  final String id;
+  final int id;
   final String productName;
   final String productCode;
   final bool isUrgent;
@@ -21,7 +21,7 @@ class Request {
   // // Método para converter um JSON em uma instância de Request
   factory Request.fromJson(Map<String, dynamic> json) {
     return Request(
-      id: json['ID'] as String,
+      id: json['ID'] as int,
       productName: json['Name'] as String,
       productCode: json['productCode'] as String,
       isUrgent: json['isUrgent'] as bool,

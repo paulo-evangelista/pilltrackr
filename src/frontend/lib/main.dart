@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         // '/newRequests': (context) => NewRequest(),
         // '/myRequests': (context) => MyRequests(),
         '/chat': (context) => const ChatPage(),
-        '/pendentes': (context) => MyRequests()
+        '/pendentes': (context) => PendingRequests()
       },
     );
   }

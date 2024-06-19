@@ -56,7 +56,8 @@ class _MyRequestsState extends State<MyRequests> {
                       .join(', ');
                   return ListTileNursery(
                     title: 'Requisição #${request['ID']}',
-                    subtitle: '$productNames - ${request['Description']}',
+                    subtitle: '$productNames - ${request['IsUrgent']}',
+                    // item: productNames,
                     // isImmediate: request['IsUrgent'],
                   );
                 },
