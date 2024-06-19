@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/request.dart';
+import 'package:frontend/views/chat/chat.dart';
 
 class ListTileNursery extends StatefulWidget {
   // final Request request;
   
   final String title;
   final String subtitle;
+  final String item;
 
   const ListTileNursery({
     super.key,
     required this.title,
     required this.subtitle,
+    required this.item,
     // required this.request,
   });
 
@@ -23,12 +26,14 @@ class _ListTileNurseryState extends State<ListTileNursery> {
   late String _title;
   late String _subtitle;
   late String _status = 'Aguardando Aprovação';
+  late String _item;
 
   @override
   void initState() {
     super.initState();
     _title = widget.title;
     _subtitle = widget.subtitle;
+    _item = widget.item;
   }
 
   void _showModal(BuildContext context) {
@@ -49,7 +54,7 @@ class _ListTileNurseryState extends State<ListTileNursery> {
                 ),
                 children: <TextSpan>[
                   TextSpan(text: 'Items: ', style: const TextStyle(fontWeight: FontWeight.normal,)),
-                  TextSpan(text: 'Itens 1 e 2 \n', style: TextStyle(color: Colors.black,)),
+                  TextSpan(text: '$_item\n', style: TextStyle(color: Colors.black,)),
                   TextSpan(text: 'Status: ', style: TextStyle(color: Colors.black)),
                   TextSpan(text: _status, style: TextStyle(color: Colors.orange.shade800,)),
                   
@@ -68,12 +73,10 @@ class _ListTileNurseryState extends State<ListTileNursery> {
             TextButton(
               child: Text('Chat'),
               onPressed: () {
-                Navigator.of(context).pop(); // Fechar o modal
-                // Adicionar tela de chat para levar o usuário após clicar
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => SecondScreen()),
-                // );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatPage()),
+                  );
               },
             ),
           ],
