@@ -5,6 +5,7 @@ import 'package:frontend/views/nursery/feedback_request.dart';
 import 'package:frontend/views/nursery/home.dart';
 import 'package:frontend/views/nursery/other_request.dart';
 import 'package:frontend/views/chat/chat.dart';
+import 'package:frontend/views/pharmacy/central/pending_requests.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/chat',
+      initialRoute: '/pendentes',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/feedbackRequest':
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         // '/newRequests': (context) => NewRequest(),
         // '/myRequests': (context) => MyRequests(),
         '/chat': (context) => const ChatPage(),
+        '/pendentes': (context) => MyRequests()
       },
     );
   }
