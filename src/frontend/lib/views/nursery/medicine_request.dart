@@ -9,6 +9,13 @@ class MedicineRequest extends StatefulWidget {
 }
 
 class _MedicineRequest extends State<MedicineRequest> {
+  //Pyxies List
+  final List<String> _pyxies = ['PX-004', 'PX-006', 'PX-008', 'PX-010', 'PX-012'];
+  String? _selectedPyxies;
+  int? _selectedPyxiesIndex;
+
+  
+  
   List<String> _medicines = [];
   Map<String, int> _medicineCodes = {}; // Map to hold medicine name and corresponding code
   String? _selectedMedicine;
@@ -40,6 +47,7 @@ class _MedicineRequest extends State<MedicineRequest> {
   Future<void> _sendRequest() async {
     String requestId = 'PR-0081P';
     String pyxisLocation = 'MS1347 - 14º Andar';
+    print(_selectedPyxies);
 
     if (_selectedMedicine == null || _productCode == null) {
       print('Medicamento ou código do produto não selecionado.');
@@ -89,6 +97,41 @@ class _MedicineRequest extends State<MedicineRequest> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              
+              const Text(
+                'Qual o Pyxies da Requisição:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              DropdownButtonFormField<String>(
+                value: _selectedPyxies,
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedPyxies = newValue;
+                    _selectedPyxiesIndex = _pyxies.indexOf(newValue!);
+                    print('Selected Pyxies Index: $_selectedPyxiesIndex');
+                  });
+                },
+                items: _pyxies.map((pyxies) {
+                  return DropdownMenuItem(
+                    value: pyxies,
+                    child: Text(pyxies),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    borderSide: BorderSide(color: Colors.black, width: 3.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+
               const Text(
                 'Medicamento Faltante:',
                 style: TextStyle(
@@ -99,6 +142,7 @@ class _MedicineRequest extends State<MedicineRequest> {
               const SizedBox(height: 10),
 
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 value: _selectedMedicine,
                 onChanged: (newValue) {
                   setState(() {
