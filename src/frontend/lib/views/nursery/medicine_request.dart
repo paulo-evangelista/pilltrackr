@@ -18,8 +18,8 @@ class _MedicineRequest extends State<MedicineRequest> {
   
   List<String> _medicines = [];
   Map<String, int> _medicineCodes = {}; // Map to hold medicine name and corresponding code
-  String? _selectedMedicine;
-  int? _productCode; // Product code associated with the selected medicine
+  List? _selectedMedicines = [null];
+  List? _productCodes = [null]; // Product code associated with the selected medicine
   bool _isImmediate = false;
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -49,11 +49,9 @@ class _MedicineRequest extends State<MedicineRequest> {
     String pyxisLocation = 'MS1347 - 14º Andar';
     print(_selectedPyxies);
 
-    if (_selectedMedicine == null || _productCode == null) {
-      print('Medicamento ou código do produto não selecionado.');
-      return;
+    if(_selectedMedicines.any((medicine) => medicine == null) || _productCodes.any((code) => code == null)){
+      
     }
-
     try {
       var response = await dio.post('/request/create', data: {
         "isUrgent":  _isImmediate,
@@ -144,12 +142,12 @@ class _MedicineRequest extends State<MedicineRequest> {
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 value: _selectedMedicine,
-                onChanged: (newValue) {
+                onChanged: _selectedPyxies != null ? (newValue) {
                   setState(() {
                     _selectedMedicine = newValue;
                     _productCode = _medicineCodes[newValue];
                   });
-                },
+                } : null ,
                 items: _medicines.map((medicine) {
                   return DropdownMenuItem(
                     value: medicine,
@@ -164,6 +162,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                   filled: true,
                   fillColor: Colors.white,
                 ),
+                disabledHint: Text('É necessário selecionar em qual Pyxies você está primeiro'),
               ),
               const SizedBox(height: 20),
 
