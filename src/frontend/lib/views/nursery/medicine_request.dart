@@ -145,6 +145,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                   fillColor: Colors.white,
                 ),
               ),
+              const SizedBox(height: 20),
               const Text(
                 'Medicamento Faltante:',
                 style: TextStyle(
@@ -201,7 +202,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
                   Wrap(
                     spacing: 8.0,
                     runSpacing: 4.0,
@@ -214,11 +215,10 @@ class _MedicineRequest extends State<MedicineRequest> {
                             ))
                         .toList(),
                     ),
+                    const SizedBox(height: 20),
                 ],
-               ),),
-              )
-              
-              const SizedBox(height: 20),
+               ),
+              ),            
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
