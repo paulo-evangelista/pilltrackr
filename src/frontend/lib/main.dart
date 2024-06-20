@@ -36,13 +36,13 @@ class MyApp extends StatelessWidget {
             );
     // Exemplo de outra rota sendo passada com parametros
     //      
-          // case '/detail':
+          // case '/chat':
           //   final args = settings.arguments as Map<String, dynamic>;
           //   return MaterialPageRoute(
           //     builder: (context) {
-          //       return DetailScreen(
-          //         itemId: args['itemId'],
-          //         itemName: args['itemName'],
+          //       return ChatPage(
+          //         requestId: args['requestId'],
+          //         userToken: args['userToken'],
           //       );
           //     },
           //   );
