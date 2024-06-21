@@ -72,7 +72,7 @@ class _MyRequestsState extends State<MyRequests> {
                     title: 'Requisição #${request['ID']}',
                     subtitle: '$productNames - ${request['IsUrgent']}',
                     item: productNames,
-                    status: element
+                    requestId: request['ID'],
                     // isImmediate: request['IsUrgent'],
                   );
                 },
