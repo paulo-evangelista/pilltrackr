@@ -32,18 +32,7 @@ class MyApp extends StatelessWidget {
               builder: (context) {
                 return FeedbackRequest(
                   requestId: args['requestId'],
-                  pyxisLocation: args['pyxisLocation'],
-                  userToken: args['userToken'],
-                );
-              },
-            );
-          case '/chat':
-            final args = settings.arguments as Map<String, dynamic>;
-            return MaterialPageRoute(
-              builder: (context) {
-                return ChatPage(
-                  requestId: args['requestId'],
-                  userToken: args['userToken'],
+                  medicinesList: args['medicinesList'],
                 );
               },
             );
