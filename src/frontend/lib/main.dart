@@ -3,6 +3,7 @@ import 'package:frontend/navigation_menu.dart';
 import 'package:frontend/views/nursery/feedback_request.dart';
 // Views
 import 'package:frontend/views/nursery/home.dart';
+import 'package:frontend/views/nursery/my_requests.dart';
 import 'package:frontend/views/nursery/other_request.dart';
 import 'package:frontend/views/chat/chat.dart';
 import 'package:frontend/views/pharmacy/central/pending_requests.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => NavigationMenu(),
         '/otherRequest': (context) => OtherRequest(),
         // '/newRequests': (context) => NewRequest(),
-        // '/myRequests': (context) => MyRequests(),
+        '/myRequests': (context) => MyRequests(),
         '/chat': (context) => const ChatPage(),
         '/pendentes': (context) => PendingRequests()
       },

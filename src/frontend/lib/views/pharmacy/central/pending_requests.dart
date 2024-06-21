@@ -1,9 +1,8 @@
-//pending_requests.dart
-
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:frontend/services/pharmacy_request_service.dart';
 import 'package:frontend/widgets/list_tile_pharmacy.dart';
+import 'package:frontend/widgets/list_tile_nursery.dart';
 
 //random
 import "dart:math";
@@ -15,6 +14,7 @@ class PendingRequests extends StatefulWidget {
 
 class _PendingRequestsState extends State<PendingRequests> {
   List<Map<String, dynamic>> _requests = [];
+  List<Map<String, dynamic>> _finishedRequests = []; // Lista para armazenar requisições finalizadas
   List<int> _requestOrder = []; // Lista para armazenar a ordem dos IDs das requisições
 
   @override
@@ -46,12 +46,20 @@ class _PendingRequestsState extends State<PendingRequests> {
       // Atualizar a ordem dos IDs
       final requestId = _requestOrder.removeAt(oldIndex);
       _requestOrder.insert(newIndex, requestId);
-      print(_requestOrder);
+      print(_requestOrder[1]);
     });
   }
 
-  final _random = new Random();
-  var statusList = ['Aguardando Aprovação','Aprovado','Rejeitado'];
+  void _sendRequests() {
+    setState(() {
+      _finishedRequests.addAll(_requests); // Adiciona todas as requisições pendentes às finalizadas
+      _requests.clear(); // Limpa as requisições pendentes
+      _requestOrder.clear(); // Limpa a ordem das requisições pendentes
+    });
+  }
+
+  final _random = Random();
+  var statusList = ['Aguardando Aprovação', 'Aprovado', 'Rejeitado'];
 
   @override
   Widget build(BuildContext context) {
@@ -80,30 +88,62 @@ class _PendingRequestsState extends State<PendingRequests> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: _requests.isEmpty
-                  ? Center(child: CircularProgressIndicator())
-                  : ReorderableListView(
-                      onReorder: _onReorder,
-                      children: _requests.map((request) {
-                        var index = _requests.indexOf(request);
+              child: Column(
+                children: [
+                  Expanded(
+                    child: _requests.isEmpty
+                        ? Center(child: Text('Nenhuma Requisição Pendente'))
+                        : ReorderableListView(
+                            onReorder: _onReorder,
+                            children: _requests.asMap().entries.map((entry) {
+                              var index = entry.key;
+                              var request = entry.value;
+                              var productNames = (request['Products'] as List<dynamic>)
+                                  .map((product) => product['Name'] as String)
+                                  .join(', ');
+
+                              var element = statusList[_random.nextInt(statusList.length)];
+
+                              return ListTilePharmacy(
+                                key: ValueKey(request['ID']),
+                                id: _requestOrder.isNotEmpty ? _requestOrder[index] : 0,
+                                title: 'Requisição #${request['ID']}',
+                                subtitle: '$productNames - ${request['Description']}',
+                                status: element,
+                              );
+                            }).toList(),
+                          ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _sendRequests,
+                    child: const Text('Enviar'),
+                  ),
+                ],
+              ),
+            ),
+            // Tela de requisições finalizadas
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: _finishedRequests.isEmpty
+                  ? Center(child: Text('Nenhuma requisição finalizada'))
+                  : ListView.builder(
+                      itemCount: _finishedRequests.length,
+                      itemBuilder: (context, index) {
+                        var request = _finishedRequests[index];
                         var productNames = (request['Products'] as List<dynamic>)
                             .map((product) => product['Name'] as String)
                             .join(', ');
-                        
-                        var element = statusList[_random.nextInt(statusList.length)];
-                        
+
                         return ListTilePharmacy(
                           key: ValueKey(request['ID']),
-                          id: _requestOrder[index],
+                          id: _requestOrder.isNotEmpty ? _requestOrder[index] : 0,
                           title: 'Requisição #${request['ID']}',
                           subtitle: '$productNames - ${request['Description']}',
-                          status: element,
+                          status: 'Aprovado',
                         );
-                      }).toList(),
+                      },
                     ),
             ),
-            // Aqui você deve implementar a lógica para a tela de requisições finalizadas
-            Center(child: Text('Requests Finalizadas')),
           ],
         ),
       ),
