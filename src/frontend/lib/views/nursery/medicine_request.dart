@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../../services/request_service.dart';
 import 'dart:convert';
+import 'dart:math';
+import '../nursery/feedback_request.dart';
 
 class MedicineRequest extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class MedicineRequest extends StatefulWidget {
 }
 
 class _MedicineRequest extends State<MedicineRequest> {
-  //Pyxies List
+  // Pyxies List
   final List<String> _pyxies = ['PX-004', 'PX-006', 'PX-008', 'PX-010', 'PX-012'];
   String? _selectedPyxies;
   int? _selectedPyxiesIndex;
@@ -46,6 +48,14 @@ class _MedicineRequest extends State<MedicineRequest> {
 
   void _addMedicine() {
     if (_selectedMedicine != null && _productCode != null) {
+      bool isDuplicate = _addedMedicines.any((medicine) => medicine['code'] == _productCode);
+      if (isDuplicate) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Este medicamento já foi adicionado.')),
+        );
+        return;
+      }
+
       setState(() {
         _addedMedicines.add({'name': _selectedMedicine, 'code': _productCode});
         _selectedMedicine = null;
@@ -60,10 +70,19 @@ class _MedicineRequest extends State<MedicineRequest> {
     });
   }
 
+  String _generateRandomId() {
+    const int length = 8;
+    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    Random random = Random();
+    return String.fromCharCodes(Iterable.generate(
+      length,
+      (_) => chars.codeUnitAt(random.nextInt(chars.length)),
+    ));
+  }
+
   Future<void> _sendRequest() async {
-    String requestId = 'PR-0081P';
-    String pyxisLocation = 'MS1347 - 14º Andar';
-    print(_selectedPyxies);
+    String requestId = _generateRandomId();
+    List<String> medicinesList = _addedMedicines.map((medicine) => medicine['name'] as String).toList();
 
     if (_addedMedicines.isEmpty) {
       print('Nenhum medicamento adicionado.');
@@ -80,10 +99,14 @@ class _MedicineRequest extends State<MedicineRequest> {
 
       if (response.statusCode == 201) {
         print('Requisição enviada com sucesso.');
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          '/feedbackRequest',
-          arguments: {'requestId': requestId, 'pyxisLocation': pyxisLocation},
+          MaterialPageRoute(
+            builder: (context) => FeedbackRequest(
+              requestId: requestId,
+              medicinesList: medicinesList,
+            ),
+          ),
         );
       } else {
         print('Erro ao enviar requisição: ${response.statusMessage}');

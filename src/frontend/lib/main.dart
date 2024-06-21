@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
               builder: (context) {
                 return FeedbackRequest(
                   requestId: args['requestId'],
-                  pyxisLocation: args['pyxisLocation'],
+                  medicinesList: args['medicinesList'],
                 );
               },
             );
