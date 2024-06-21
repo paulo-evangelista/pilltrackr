@@ -14,14 +14,14 @@ class _MedicineRequest extends State<MedicineRequest> {
   String? _selectedPyxies;
   int? _selectedPyxiesIndex;
 
-  
-  
   List<String> _medicines = [];
   Map<String, int> _medicineCodes = {}; // Map to hold medicine name and corresponding code
   String? _selectedMedicine;
   int? _productCode; // Product code associated with the selected medicine
   bool _isImmediate = false;
   final TextEditingController _descriptionController = TextEditingController();
+
+  List<Map<String, dynamic>> _addedMedicines = []; // List to hold added medicines and their codes
 
   @override
   void initState() {
@@ -44,21 +44,37 @@ class _MedicineRequest extends State<MedicineRequest> {
     }
   }
 
+  void _addMedicine() {
+    if (_selectedMedicine != null && _productCode != null) {
+      setState(() {
+        _addedMedicines.add({'name': _selectedMedicine, 'code': _productCode});
+        _selectedMedicine = null;
+        _productCode = null;
+      });
+    }
+  }
+
+  void _removeMedicine(int index) {
+    setState(() {
+      _addedMedicines.removeAt(index);
+    });
+  }
+
   Future<void> _sendRequest() async {
     String requestId = 'PR-0081P';
     String pyxisLocation = 'MS1347 - 14º Andar';
     print(_selectedPyxies);
 
-    if (_selectedMedicine == null || _productCode == null) {
-      print('Medicamento ou código do produto não selecionado.');
+    if (_addedMedicines.isEmpty) {
+      print('Nenhum medicamento adicionado.');
       return;
     }
 
     try {
       var response = await dio.post('/request/create', data: {
-        "isUrgent":  _isImmediate,
+        "isUrgent": _isImmediate,
         "description": _descriptionController.text,
-        "productCodes":  [_productCode],
+        "productCodes": _addedMedicines.map((medicine) => medicine['code']).toList(),
         "pyxisID": 2
       });
 
@@ -97,7 +113,6 @@ class _MedicineRequest extends State<MedicineRequest> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               const Text(
                 'Qual o Pyxies da Requisição:',
                 style: TextStyle(
@@ -106,7 +121,6 @@ class _MedicineRequest extends State<MedicineRequest> {
                 ),
               ),
               const SizedBox(height: 10),
-
               DropdownButtonFormField<String>(
                 value: _selectedPyxies,
                 onChanged: (newValue) {
@@ -131,7 +145,7 @@ class _MedicineRequest extends State<MedicineRequest> {
                   fillColor: Colors.white,
                 ),
               ),
-
+              const SizedBox(height: 20),
               const Text(
                 'Medicamento Faltante:',
                 style: TextStyle(
@@ -140,45 +154,71 @@ class _MedicineRequest extends State<MedicineRequest> {
                 ),
               ),
               const SizedBox(height: 10),
-
-              DropdownButtonFormField<String>(
-                isExpanded: true,
-                value: _selectedMedicine,
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedMedicine = newValue;
-                    _productCode = _medicineCodes[newValue];
-                  });
-                },
-                items: _medicines.map((medicine) {
-                  return DropdownMenuItem(
-                    value: medicine,
-                    child: Text(medicine),
-                  );
-                }).toList(),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    borderSide: BorderSide(color: Colors.black, width: 3.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      value: _selectedMedicine,
+                      onChanged: _selectedPyxies != null ? (newValue) {
+                        setState(() {
+                          _selectedMedicine = newValue;
+                          _productCode = _medicineCodes[newValue];
+                        });
+                      } : null,
+                      items: _medicines.map((medicine) {
+                        return DropdownMenuItem(
+                          value: medicine,
+                          child: Text(medicine),
+                        );
+                      }).toList(),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          borderSide: BorderSide(color: Colors.black, width: 3.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      disabledHint: Text('É necessário selecionar um Pyxis primeiro!'),
+                    ),
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: _addMedicine,
+                    color: Colors.purple,
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
-
-              TextButton.icon(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.purple,
+              Visibility(
+               visible: _addedMedicines.isNotEmpty,
+               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Medicamentos Adicionados:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                  ),
                 ),
-                onPressed: () {
-                  // Lógica para adicionar um novo medicamento
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Adicionar medicamento'),
-              ),
-              const SizedBox(height: 20),
-
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: _addedMedicines
+                        .asMap()
+                        .entries
+                        .map((entry) => Chip(
+                              label: Text(entry.value['name']),
+                              onDeleted: () => _removeMedicine(entry.key),
+                            ))
+                        .toList(),
+                    ),
+                    const SizedBox(height: 20),
+                ],
+               ),
+              ),            
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -200,7 +240,6 @@ class _MedicineRequest extends State<MedicineRequest> {
                 ],
               ),
               const SizedBox(height: 40),
-
               const Text(
                 'Descrição Adicional:',
                 style: TextStyle(
@@ -209,7 +248,6 @@ class _MedicineRequest extends State<MedicineRequest> {
                 ),
               ),
               const SizedBox(height: 10),
-
               TextField(
                 controller: _descriptionController,
                 maxLines: 3,
@@ -223,7 +261,6 @@ class _MedicineRequest extends State<MedicineRequest> {
                 ),
               ),
               const SizedBox(height: 30),
-
               Center(
                 child: ElevatedButton(
                   onPressed: _sendRequest,
@@ -239,7 +276,7 @@ class _MedicineRequest extends State<MedicineRequest> {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }
