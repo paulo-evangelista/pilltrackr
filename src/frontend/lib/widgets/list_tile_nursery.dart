@@ -121,8 +121,8 @@ class _ListTileNurseryState extends State<ListTileNursery> {
     }
 
     return ListTile(
-      title: Text('$_title'),
-      subtitle: Text('$_subtitle'),
+      title: Text(_title),
+      subtitle: Text(_subtitle),
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
