@@ -4,11 +4,11 @@ import '../../services/request_service.dart';
 import '../../widgets/list_tile_nursery.dart';
 
 class MyRequests extends StatefulWidget {
-  final String userToken;
+  // final String userToken;
 
   const MyRequests({
     Key? key,
-    required this.userToken,
+    // required this.userToken,
   }) : super(key: key);
 
   @override
@@ -65,7 +65,7 @@ class _MyRequestsState extends State<MyRequests> {
                     title: 'Requisição #${request['ID']}',
                     subtitle: '$productNames - ${request['IsUrgent']}',
                     item: productNames,
-                    userToken: widget.userToken,
+                    // userToken: widget.userToken,
                     requestId: request['ID'],
                   );
                 },

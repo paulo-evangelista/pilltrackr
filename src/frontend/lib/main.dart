@@ -3,7 +3,6 @@ import 'package:frontend/navigation_menu.dart';
 import 'package:frontend/views/nursery/feedback_request.dart';
 // Views
 import 'package:frontend/views/nursery/home.dart';
-import 'package:frontend/views/nursery/my_requests.dart';
 import 'package:frontend/views/nursery/other_request.dart';
 import 'package:frontend/views/chat/chat.dart';
 import 'package:frontend/views/pharmacy/central/pending_requests.dart';
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Pilltrackr',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromRGBO(40, 57, 104, 1)),
         useMaterial3: true,
@@ -34,18 +32,7 @@ class MyApp extends StatelessWidget {
               builder: (context) {
                 return FeedbackRequest(
                   requestId: args['requestId'],
-                  pyxisLocation: args['pyxisLocation'],
-                  userToken: args['userToken'],
-                );
-              },
-            );
-          case '/chat':
-            final args = settings.arguments as Map<String, dynamic>;
-            return MaterialPageRoute(
-              builder: (context) {
-                return ChatPage(
-                  requestId: args['requestId'],
-                  userToken: args['userToken'],
+                  medicinesList: args['medicinesList'],
                 );
               },
             );
@@ -57,8 +44,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => NavigationMenu(userToken: userToken),
         '/otherRequest': (context) => OtherRequest(),
         // '/newRequests': (context) => NewRequest(),
-        '/myRequests': (context) => MyRequests(),
-        '/chat': (context) => const ChatPage(),
+        // '/myRequests': (context) => MyRequests(),
         '/pendentes': (context) => PendingRequests()
       },
     );
