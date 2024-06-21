@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Pilltrackr',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromRGBO(40, 57, 104, 1)),
         useMaterial3: true,
