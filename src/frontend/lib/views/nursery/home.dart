@@ -8,7 +8,7 @@ class HomeNursery extends StatefulWidget {
 }
 
 class _HomeNurseryState extends State<HomeNursery> {
-  String selectedOption = 'Medicamentos';
+  String selectedOption = 'Mat/Med';
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +50,10 @@ class _HomeNurseryState extends State<HomeNursery> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(25.0), // Bordas mais circulares
                   child: ToggleButtons(
-                    isSelected: [selectedOption == 'Medicamentos', selectedOption == 'Outros'],
+                    isSelected: [selectedOption == 'Mat/Med', selectedOption == 'Outros'],
                     onPressed: (int index) {
                       setState(() {
-                        selectedOption = index == 0 ? 'Medicamentos' : 'Outros';
+                        selectedOption = index == 0 ? 'Mat/Med' : 'Outros';
                       });
                     },
                     borderColor: Colors.transparent,
@@ -63,7 +63,7 @@ class _HomeNurseryState extends State<HomeNursery> {
                     selectedColor: Colors.white,
                     constraints: BoxConstraints(minHeight: 70.0, minWidth: 150.0),
                     children: const [
-                      Text('Medicamentos'),
+                      Text('Mat/Med'),
                       Text('Outros'),
                     ],
                   ),
@@ -80,7 +80,7 @@ class _HomeNurseryState extends State<HomeNursery> {
                       MaterialPageRoute(builder: (context) => OtherRequest()),
                     );
                   } 
-                  else if (selectedOption == 'Medicamentos') {
+                  else if (selectedOption == 'Mat/Med') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MedicineRequest()), // Navega para NewRequest
