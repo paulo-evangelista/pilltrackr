@@ -5,8 +5,13 @@ import 'package:frontend/views/nursery/my_requests.dart';
 class FeedbackRequest extends StatelessWidget {
   final String requestId;
   final String pyxisLocation;
+  final String userToken;
 
-  FeedbackRequest({required this.requestId, required this.pyxisLocation});
+  FeedbackRequest({
+    required this.requestId,
+    required this.pyxisLocation,
+    required this.userToken,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,6 @@ class FeedbackRequest extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -40,13 +44,18 @@ class FeedbackRequest extends StatelessWidget {
                   color: Colors.black,
                 ),
                 children: <TextSpan>[
-                  TextSpan(text: 'Requisição $requestId ', style: const TextStyle(color: Colors.purple,)),
-                  TextSpan(text: 'foi feita com sucesso!', style: TextStyle(color: Colors.black,)),
+                  TextSpan(
+                    text: 'Requisição $requestId ',
+                    style: const TextStyle(color: Colors.purple),
+                  ),
+                  TextSpan(
+                    text: 'foi feita com sucesso!',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 30),
-
             RichText(
               text: TextSpan(
                 text: 'Pyxis mais próximo com os medicamentos:  ',
@@ -56,18 +65,22 @@ class FeedbackRequest extends StatelessWidget {
                   color: Colors.black,
                 ),
                 children: <TextSpan>[
-                  TextSpan(text: '\n$pyxisLocation ', style: const TextStyle(color: Colors.purple,)),
+                  TextSpan(
+                    text: '\n$pyxisLocation ',
+                    style: const TextStyle(color: Colors.purple),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 70),
-
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyRequests()),
+                    MaterialPageRoute(
+                      builder: (context) => MyRequests(userToken: userToken),
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(

@@ -5,6 +5,7 @@ import 'package:frontend/views/nursery/feedback_request.dart';
 import 'package:frontend/views/nursery/home.dart';
 import 'package:frontend/views/nursery/other_request.dart';
 import 'package:frontend/views/chat/chat.dart';
+import 'package:frontend/views/pharmacy/central/pending_requests.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final String userToken = 'paulo';
+
     return MaterialApp(
       title: 'Pilltrackr',
       debugShowCheckedModeBanner: false,
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/chat',
+      initialRoute: '/',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/feedbackRequest':
@@ -31,31 +34,30 @@ class MyApp extends StatelessWidget {
                 return FeedbackRequest(
                   requestId: args['requestId'],
                   pyxisLocation: args['pyxisLocation'],
+                  userToken: args['userToken'],
                 );
               },
             );
-    // Exemplo de outra rota sendo passada com parametros
-    //      
-          // case '/chat':
-          //   final args = settings.arguments as Map<String, dynamic>;
-          //   return MaterialPageRoute(
-          //     builder: (context) {
-          //       return ChatPage(
-          //         requestId: args['requestId'],
-          //         userToken: args['userToken'],
-          //       );
-          //     },
-          //   );
+          case '/chat':
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (context) {
+                return ChatPage(
+                  requestId: args['requestId'],
+                  userToken: args['userToken'],
+                );
+              },
+            );
           default:
             return null; // Return null to use default `onUnknownRoute`
         }
       },
       routes: {
-        '/': (context) => NavigationMenu(),
+        '/': (context) => NavigationMenu(userToken: userToken),
         '/otherRequest': (context) => OtherRequest(),
         // '/newRequests': (context) => NewRequest(),
         // '/myRequests': (context) => MyRequests(),
-        '/chat': (context) => const ChatPage(),
+        '/pendentes': (context) => PendingRequests()
       },
     );
   }
