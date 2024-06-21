@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../../services/request_service.dart';
@@ -28,6 +30,9 @@ class _MyRequestsState extends State<MyRequests> {
     }
   }
 
+  final _random = new Random();
+  var statusList = ['Aguardando Aprovação','Aprovado','Rejeitado'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,10 +59,13 @@ class _MyRequestsState extends State<MyRequests> {
                   var productNames = (request['Products'] as List<dynamic>)
                       .map((product) => product['Name'] as String)
                       .join(', ');
+                  var element = statusList[_random.nextInt(statusList.length)];
+
                   return ListTileNursery(
                     title: 'Requisição #${request['ID']}',
                     subtitle: '$productNames - ${request['IsUrgent']}',
                     item: productNames,
+                    status: element
                     // isImmediate: request['IsUrgent'],
                   );
                 },
