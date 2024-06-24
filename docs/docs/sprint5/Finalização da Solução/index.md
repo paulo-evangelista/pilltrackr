@@ -24,24 +24,15 @@ Durante o desenvolvimento, a documentação foi constantemente atualizada para r
 
 Em resumo, a entrega desta solução marca um avanço significativo na gestão de medicamentos no Hospital Sírio-Libanês, proporcionando uma maior eficiência operacional e um controle rigoroso sobre o uso de dispensadores. Este projeto não só moderniza os processos internos do hospital, mas também reforça seu compromisso com a excelência e a inovação contínua na área da saúde.
 
-## Vídeos Demonstrativos
+## Vídeo das ações do aplicativo mobile
 
-### Tela de Ações do Enfermeiro e Tela das Ações da Farmácia
 
-<table>
-  <tr>
-    <td>
-      <a href="https://youtube.com/shorts/nryjFrs5ZFs">
-        <img src="https://img.youtube.com/vi/nryjFrs5ZFs/1.jpg" alt="Tela de Ações do Enfermeiro" style="width:100%;" />
-      </a>
-    </td>
-    <td>
-      <a href="https://youtube.com/shorts/MzpbmI6T8XY">
-        <img src="https://img.youtube.com/vi/MzpbmI6T8XY/1.jpg" alt="Tela das Ações da Farmácia" style="width:100%;" />
-      </a>
-    </td>
-  </tr>
-</table>
+#### Tela de Ações do Enfermeiro
 
+[![Demonstração do Envio de Requisições de Medicamentos](https://img.youtube.com/vi/nryjFrs5ZFs/1.jpg)](https://youtube.com/shorts/nryjFrs5ZFs)
+
+#### Tela das Ações da Farmácia
+
+[![Demonstração do Envio de Requisições de Medicamentos](https://img.youtube.com/vi/MzpbmI6T8XY/1.jpg)](https://youtube.com/shorts/MzpbmI6T8XY)
 
 
