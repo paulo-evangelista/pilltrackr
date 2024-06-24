@@ -32,15 +32,16 @@ Em resumo, a entrega desta solução marca um avanço significativo na gestão d
   <tr>
     <td>
       <a href="https://youtube.com/shorts/nryjFrs5ZFs">
-        <img src="https://img.youtube.com/vi/nryjFrs5ZFs/1.jpg" alt="Tela de Ações do Enfermeiro" style="width:100%;">
+        <img src="https://img.youtube.com/vi/nryjFrs5ZFs/1.jpg" alt="Tela de Ações do Enfermeiro" style="width:100%;" />
       </a>
     </td>
     <td>
       <a href="https://youtube.com/shorts/MzpbmI6T8XY">
-        <img src="https://img.youtube.com/vi/MzpbmI6T8XY/1.jpg" alt="Tela das Ações da Farmácia" style="width:100%;">
+        <img src="https://img.youtube.com/vi/MzpbmI6T8XY/1.jpg" alt="Tela das Ações da Farmácia" style="width:100%;" />
       </a>
     </td>
   </tr>
 </table>
+
 
 
