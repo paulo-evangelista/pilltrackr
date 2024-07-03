@@ -1,0 +1,101 @@
+services:
+
+  server:
+    container_name: server
+    build:
+      context: ../server
+      dockerfile: prod.Dockerfile
+    volumes:
+      - ../server:/app
+    ports:
+    - 8080:8080
+    environment:
+      DB_HOST: db
+      REDIS_HOST: redis
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis: 
+        condition: service_healthy
+
+  ws-server:
+    container_name: ws-server
+    build: 
+      context: ../ws-server
+      dockerfile: prod.Dockerfile
+    volumes:
+      - ../ws-server:/app
+    ports:
+    - 8081:8081
+    environment:
+      DB_HOST: db
+      REDIS_HOST: redis
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    
+  db:
+    container_name: postgres_db
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    ports: 
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    expose:
+      - 6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    restart: always
+
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:latest
+    user: "0"
+    environment:
+      GF_PATHS_CONFIG: /etc/grafana/grafana_settings.ini
+    ports:
+      - 3000:3000
+    restart: always
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana_settings.prod.ini:/etc/grafana/grafana_settings.ini
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    restart: always
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.prod.yml:/etc/prometheus/prometheus.yml
+    expose:
+      - 9090
+
+
+volumes:
+  postgres_data:
+  grafana_data:
