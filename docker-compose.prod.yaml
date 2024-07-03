@@ -80,7 +80,7 @@ services:
     restart: always
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana_settings.prod.ini:/etc/grafana/grafana_settings.ini
+      - ./monitoring/grafana_settings.ini:/etc/grafana/grafana_settings.ini
 
   prometheus:
     container_name: prometheus
@@ -91,7 +91,7 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-      - ./prometheus.prod.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus.prod.yml:/etc/prometheus/prometheus.yml
     expose:
       - 9090
 

@@ -73,7 +73,9 @@ services:
     restart: always
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./docker/grafana_settings.ini:/etc/grafana/grafana_settings.ini
+      - ./monitoring/grafana_settings.ini:/etc/grafana/grafana_settings.ini
+      - ./monitoring/datasources:/etc/grafana/provisioning/datasources
+      - ./monitoring/dashboards:/etc/grafana/provisioning/dashboards
 
   prometheus:
     container_name: prometheus
@@ -84,7 +86,7 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
 
